@@ -26,6 +26,8 @@ var pickedDrawing = {
 var yMouseOffset = -3;
 var pickedLerpRate = 0.12;
 
+var lastKnownWindowSize;
+
 function setValues() {
 	gap = width/20;
 	$('#points').css("top", gap+'px');
@@ -47,6 +49,8 @@ function setValues() {
 		textX: width/2,
 		textY: 1.08*((width-(gap*2))*130/512)
 	}
+	lastKnownWindowSize.w = windowWidth;
+	lastKnownWindowSize.h = windowHeight;
 }
 
 var sources = {
@@ -69,6 +73,9 @@ function setup(callback) {
 }
 
 function draw() {
+	if (lastKnownWindowSize.w != windowWidth || lastKnownWindowSize.h != windowHeight) {
+		windowResized();
+	}
 	if (!imagesLoaded) {
 		drawLoadingAnimation();
 		return;
@@ -114,6 +121,7 @@ function windowResized() {
 
 	resizeCanvas($('#gameArea').width(), $('#gameArea').height());
 	setValues();
+
 }
 
 function cleanGrid() {
