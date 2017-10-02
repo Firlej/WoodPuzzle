@@ -8,9 +8,7 @@
         Quaint
     </author>
     <content src="index.html" />
-    <preference name="orienation" value="portrait" />
-    <preference name="Fullscreen" value="true" />
-    <plugin name="cordova-plugin-whitelist" spec="1" />
+    <plugin name="cordova-plugin-whitelist" spec="1.3.2" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -20,6 +18,9 @@
     <allow-intent href="geo:*" />
     <platform name="android">
         <allow-intent href="market:*" />
+        <preference name="orienation" value="portrait" />
+        <preference name="Fullscreen" value="true" />
+        <preference name="StatusBarOverlaysWebView" value="true" />
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />

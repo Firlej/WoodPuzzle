@@ -125,7 +125,6 @@ function cleanGrid() {
 
 function addPoints(amount) {
 	points+=amount;
-	$('#points').html(points);
 }
 
 function checkGrid() {
