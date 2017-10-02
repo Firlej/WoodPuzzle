@@ -4,6 +4,7 @@ var gap;
 
 var gridstart;
 var optionsstarts = [];
+var pointsBaner;
 
 var grid = [];
 var options = [null, null, null];
@@ -22,7 +23,7 @@ var pickedDrawing = {
 	y: 0
 }
 
-var yMouseOffset = -2;
+var yMouseOffset = -3;
 var pickedLerpRate = 0.12;
 
 function setValues() {
@@ -37,6 +38,15 @@ function setValues() {
 	optionsstarts[0] = { x: gap, y: gridstart.y+gridsize*tile+gap };
 	optionsstarts[1] = { x: gap + gap/2 + othertile*5, y: optionsstarts[0].y };
 	optionsstarts[2] = { x: gap + gap + othertile*10, y: optionsstarts[0].y };
+	pointsBaner = {
+		x: gap,
+		y: gap,
+		w: width-(gap*2),
+		h: (width-(gap*2))*130/512,
+		fontSize: ((width-(gap*2))*130/512)+"px Arial",
+		textX: width/2,
+		textY: 1.08*((width-(gap*2))*130/512)
+	}
 }
 
 var sources = {
@@ -55,7 +65,6 @@ function setup(callback) {
 
 	cleanGrid();
 
-
 	callback();
 }
 
@@ -65,13 +74,9 @@ function draw() {
 		return;
 	}
 	
-	image(images.bg, 0, 0, width, height);
+	drawBackground();
 
-	image(images.pointsBg, gap, gap, width-(gap*2),(width-(gap*2))*130/512);
-	font(((width-(gap*2))*130/512)+"px Arial");
-	textAlign("center");
-	if(lost) { fill('blue'); }
-	text(points,width/2,1.08*((width-(gap*2))*130/512));
+	drawPointsBaner();
 
 	drawGridBG();
 	drawOptionsBG();
@@ -98,17 +103,12 @@ function windowResized() {
 		newWidth = newHeight * widthToHeight;
 		gameArea.style.height = newHeight + 'px';
 		gameArea.style.width = newWidth + 'px';
-		//$('#points').css("font-size", "11.7vh");
-		//console.log(1);
 	} else { 
 		// window height is too high relative to desired game height
 		newHeight = newWidth / widthToHeight;
 		gameArea.style.width = newWidth + 'px';
 		gameArea.style.height = newHeight + 'px';
-		//$('#points').css("font-size", "20.6vw");
-		//console.log(2);
 	}
-	//$('#points').css("font-size", (newWidth / 75) + 'em');
 	gameArea.style.marginTop = (-newHeight / 2) + 'px';
 	gameArea.style.marginLeft = (-newWidth / 2) + 'px';
 
@@ -130,29 +130,39 @@ function addPoints(amount) {
 }
 
 function checkGrid() {
+	var colsToRemove = [];
+	var rowsToRemove = [];
 	for(var y=0; y<gridsize; y++) {
-		var good = true;
+		var toRemove = true;
 		for(var x=0; x<gridsize; x++) {
-			if (grid[y][x]!=1) { good=false; break; }
+			if (grid[y][x]!=1) { toRemove=false; break; }
 		}
-		if (good) {
-			for(var i=0; i<gridsize; i++) {
-				grid[y][i] = 0;
-			}
-			addPoints(gridsize);
+		if (toRemove) {
+			rowsToRemove.push(y);
 		}
 	}
 	for(var x=0; x<gridsize; x++) {
-		var good = true;
+		var toRemove = true;
 		for(var y=0; y<gridsize; y++) {
-			if (grid[y][x]!=1) { good=false; break; }
+			if (grid[y][x]!=1) { toRemove=false; break; }
 		}
-		if (good) {
-			for(var i=0; i<gridsize; i++) {
-				grid[i][x] = 0;
-			}
-			addPoints(gridsize);
+		if (toRemove) {
+			colsToRemove.push(x);	
 		}
+	}
+	for(var i=0; i<colsToRemove.length; i++) {
+		var x = colsToRemove[i];
+		for(var j=0; j<gridsize; j++) {
+			grid[j][x] = 0;
+		}
+		addPoints(gridsize);
+	}
+	for(var i=0; i<rowsToRemove.length; i++) {
+		var y = rowsToRemove[i];
+		for(var j=0; j<gridsize; j++) {
+			grid[y][j] = 0;
+		}
+		addPoints(gridsize);
 	}
 }
 
@@ -177,11 +187,11 @@ function mouseReleased() {
 			var xx = x+xindex;
 			if (option[y][x]==1) {
 				if (grid[yy]===undefined || grid[yy][xx]===undefined) {
-					console.log("Figure off grid!");
+					// Figure off grid 
 					pickedoption = null; return;
 				} else {
 					if (grid[yy][xx] == 1) {
-						console.log("Place taken!");
+						// Place taken
 						pickedoption = null; return;
 					}
 					indexes.push({y: yy, x: xx});
@@ -199,7 +209,6 @@ function mouseReleased() {
 	checkGrid();
 
 	if(gameLost()) {
-		console.log("GAME LOST");
 		lost=true;
 	}
 }
@@ -212,8 +221,8 @@ function gameLost() {
 		var option = options[i];
 		if(option==null) { continue; }
 		
-		for(var yy=0; yy<gridsize; yy++) {
-			for(var xx=0; xx<gridsize; xx++) {
+		for(var yy=-4; yy<gridsize; yy++) {
+			for(var xx=-4; xx<gridsize; xx++) {
 
 				var figureFitsHere = true;
 				for(var y=0; y<5; y++) {
@@ -232,7 +241,6 @@ function gameLost() {
 				if(figureFitsHere) {
 					return false;
 				}
-
 			}
 		}
 	}
@@ -257,7 +265,6 @@ function fillOptions() {
 
 function drawGrid() {
 	fill(color(40,40,40, 200));
-	//stroke(0);
 	var drawTile = tile-4;
 	var drawY = gridstart.y+2;
 	for(var y=0; y<grid.length; y++) {
@@ -292,7 +299,6 @@ function drawGridBG() {
 }
 
 function drawOptions() {
-	console.log(pickedDrawing.x, pickedDrawing.y);
 	if (pickedoption || pickedoption==0) {
 		pickedDrawing.x = lerp(pickedDrawing.x, mouseX, pickedLerpRate);
 		pickedDrawing.y = lerp(pickedDrawing.y, mouseY+yMouseOffset*tile, pickedLerpRate);
@@ -343,10 +349,7 @@ function drawOptionsBG() {
 		}
 	}	
 }
-var loadingObj = {
-	rotation: 0,
-	r: 40,
-}
+
 function drawLoadingAnimation() {
 	background(color(51,51,51));
 	textAlign("center");
@@ -355,4 +358,16 @@ function drawLoadingAnimation() {
 		translate(width/2, height/2);
 		text("Loading...", 0, 0);
 	pop();
+}
+
+function drawPointsBaner() {
+	image(images.pointsBg, pointsBaner.x, pointsBaner.y, pointsBaner.w, pointsBaner.h);
+	font(pointsBaner.fontSize);
+	textAlign("center");
+	if(lost) { fill('blue'); }
+	text(points, pointsBaner.textX, pointsBaner.textY);
+}
+
+function drawBackground() {
+	image(images.bg, 0, 0, width, height);
 }

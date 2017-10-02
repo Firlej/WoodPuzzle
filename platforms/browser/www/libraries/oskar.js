@@ -19,6 +19,7 @@ var frameCount = 0;
 window.onload = function() {
     canvas = $('canvas')[0];
     ctx = canvas.getContext('2d');
+    ctx.imageSmoothingEnabled = false;
 
     addEventListeners();
 
