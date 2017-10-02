@@ -8,6 +8,8 @@
         Quaint
     </author>
     <content src="index.html" />
+    <preference name="orienation" value="portrait" />
+    <preference name="Fullscreen" value="true" />
     <plugin name="cordova-plugin-whitelist" spec="1" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
