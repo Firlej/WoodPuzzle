@@ -80,6 +80,8 @@ function draw() {
 
 	drawGrid();
 	drawOptions();
+
+	if (frameCount==60*10) { windowResized(); }
 }
 
 function windowResized() {
