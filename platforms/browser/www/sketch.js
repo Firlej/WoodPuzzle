@@ -11,6 +11,7 @@ var options = [null, null, null];
 var pickedoption = null;
 
 var points = 0;
+var highscore = 0;
 
 var ptx=pty=tx=ty=0;
 
@@ -29,25 +30,37 @@ var pickedLerpRate = 0.12;
 var lastKnownWindowSize = {w: 0, h: 0};
 
 function setValues() {
-	gap = width/20;
-	$('#points').css("top", gap+'px');
+	gap = width/25;
 	tile = (width-gap*2)/10;
 	othertile = (width-gap*3)/15;
 
-	$('#ad').css("left", $('#gameArea').width()/2 - $('#ad').outerWidth()/2 );
+	pointsBaner = new function () {
+		this.x = gap;
+		this.y = gap;
+		this.w = width-(gap*2);
+		this.h = this.w*130/512;
+		this.fontSize = this.h*1.18+"px FontAwesome";
+		this.textX = this.x+this.w/2;
+		this.textY = this.y+this.h*0.905;
+	}
 
-	gridstart = { x: gap, y: (width-(gap*2))*130/512+gap*2, };
-	optionsstarts[0] = { x: gap, y: gridstart.y+gridsize*tile+gap };
-	optionsstarts[1] = { x: gap + gap/2 + othertile*5, y: optionsstarts[0].y };
-	optionsstarts[2] = { x: gap + gap + othertile*10, y: optionsstarts[0].y };
-	pointsBaner = {
+	gridstart = {
 		x: gap,
-		y: gap,
-		w: width-(gap*2),
-		h: (width-(gap*2))*130/512,
-		fontSize: ((width-(gap*2))*130/512)+"px Arial",
-		textX: width/2,
-		textY: 1.08*((width-(gap*2))*130/512)
+		y: pointsBaner.y+pointsBaner.h+gap,
+	};
+
+	optionsstarts[0] = { x: gap, y: gridstart.y+gridsize*tile+gap };
+	optionsstarts[1] = { x: optionsstarts[0].x + gap/2 + othertile*5, y: optionsstarts[0].y };
+	optionsstarts[2] = { x: optionsstarts[1].x + gap/2 + othertile*5, y: optionsstarts[0].y };
+
+	highscoreBaner = new function () {
+		this.x = gap;
+		this.y = optionsstarts[0].y + othertile*5 + gap;
+		this.w = width-(gap*2);
+		this.h = height - this.y - gap;
+		this.fontSize = this.h*1.18+"px FontAwesome";
+		this.textX = this.x+this.w/2;
+		this.textY = this.y+this.h*0.905;
 	}
 }
 
@@ -66,7 +79,7 @@ function setup(callback) {
 	windowResized();
 
 	cleanGrid();
-
+	
 	callback();
 }
 
@@ -84,6 +97,7 @@ function draw() {
 	drawBackground();
 
 	drawPointsBaner();
+	drawHighscoreBaner();
 
 	drawGridBG();
 	drawOptionsBG();
@@ -134,6 +148,9 @@ function cleanGrid() {
 
 function addPoints(amount) {
 	points+=amount;
+	if (points>highscore) {
+		highscore = points;
+	}
 }
 
 function checkGrid() {
@@ -176,6 +193,7 @@ function checkGrid() {
 function mousePressed() {
 	for(var i=0; i<optionsstarts.length; i++) {
 		if (mouseContained(optionsstarts[i].x, optionsstarts[i].y, optionsstarts[i].x+5*othertile, optionsstarts[i].y+5*othertile)) {
+			if (options[i]==null) {	return; }
 			pickedoption = i;
 			pickedDrawing.x = optionsstarts[i].x+othertile*2.5;
 			pickedDrawing.y = optionsstarts[i].y+othertile*2.5;
@@ -272,13 +290,12 @@ function fillOptions() {
 
 function drawGrid() {
 	fill(color(40,40,40, 200));
-	var drawTile = tile-4;
-	var drawY = gridstart.y+2;
+	var drawY = gridstart.y;
 	for(var y=0; y<grid.length; y++) {
-		var drawX = gridstart.x+2;
+		var drawX = gridstart.x;
 		for(var x=0; x<grid[y].length; x++) {
 			if (grid[y][x] == 1) {
-				image(images.tile, drawX, drawY, drawTile, drawTile);
+				image(images.tile, drawX, drawY, tile, tile);
 			}
 			drawX+=tile
 		}
@@ -314,17 +331,17 @@ function drawOptions() {
 	for(var i=0; i<options.length; i++) {
 		figure = options[i];
 		if (figure==null) { continue; }
-		var drawMY = pickedDrawing.y-tile*2.5+2;
-		var drawY = optionsstarts[i].y+2;
+		var drawMY = pickedDrawing.y-tile*2.5;
+		var drawY = optionsstarts[i].y;
 		for(var y=0; y<figure.length; y++) {
-			var drawMX = pickedDrawing.x-tile*2.5+2;
-			var drawX = optionsstarts[i].x+2;
+			var drawMX = pickedDrawing.x-tile*2.5;
+			var drawX = optionsstarts[i].x;
 			for(var x=0; x<figure[y].length; x++) {
 				if (figure[y][x] == 1) {
 					if (pickedoption == i) {
-						image(images.tile, drawMX, drawMY, tile-4, tile-4);
+						image(images.tile, drawMX, drawMY, tile, tile);
 					} else {
-						image(images.tile, drawX, drawY, othertile-4, othertile-4);
+						image(images.tile, drawX, drawY, othertile, othertile);
 					}
 				}
 				drawMX += tile;
@@ -375,6 +392,14 @@ function drawPointsBaner() {
 	text(points, pointsBaner.textX, pointsBaner.textY);
 }
 
+function drawHighscoreBaner() {
+	image(images.pointsBg, highscoreBaner.x, highscoreBaner.y, highscoreBaner.w, highscoreBaner.h);
+	font(highscoreBaner.fontSize);
+	textAlign("center");
+	text(highscore, highscoreBaner.textX, highscoreBaner.textY);
+}
+
 function drawBackground() {
 	image(images.bg, 0, 0, width, height);
 }
+
