@@ -78,8 +78,8 @@ function setup(callback) {
 
 	windowResized();
 
-	cleanGrid();
-	
+	resetGame();
+
 	callback();
 }
 
@@ -89,6 +89,7 @@ function draw() {
 		lastKnownWindowSize.w = windowWidth;
 		lastKnownWindowSize.h = windowHeight;
 	}
+
 	if (!imagesLoaded) {
 		drawLoadingAnimation();
 		return;
@@ -106,8 +107,6 @@ function draw() {
 
 	drawGrid();
 	drawOptions();
-
-	if (frameCount==60*10) { windowResized(); }
 }
 
 function windowResized() {
@@ -135,6 +134,14 @@ function windowResized() {
 
 	resizeCanvas($('#gameArea').width(), $('#gameArea').height());
 	setValues();
+}
+
+function resetGame() {
+	cleanGrid();
+	options = [null, null, null];
+	fillOptions();
+	points = 0;
+	lost = false;
 }
 
 function cleanGrid() {
@@ -191,6 +198,10 @@ function checkGrid() {
 }
 
 function mousePressed() {
+	if( lost ) {
+		resetGame();
+		return;
+	}
 	for(var i=0; i<optionsstarts.length; i++) {
 		if (mouseContained(optionsstarts[i].x, optionsstarts[i].y, optionsstarts[i].x+5*othertile, optionsstarts[i].y+5*othertile)) {
 			if (options[i]==null) {	return; }
