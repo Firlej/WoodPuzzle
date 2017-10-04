@@ -149,6 +149,7 @@ function addEventListeners() {
     });
 
     window.onresize = function(event) {
+        setLibValues();
         windowResized();
     };
 

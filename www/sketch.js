@@ -30,9 +30,9 @@ var pickedLerpRate = 0.12;
 var lastKnownWindowSize = {w: 0, h: 0};
 
 function setValues() {
-	gap = width/25;
-	tile = (width-gap*2)/10;
-	othertile = (width-gap*3)/15;
+	gap = floor(width/25);
+	tile = floor((width-gap*2)/10);
+	othertile = floor((width-gap*3)/15);
 
 	pointsBaner = new function () {
 		this.x = gap;
