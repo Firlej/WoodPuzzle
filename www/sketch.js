@@ -31,17 +31,17 @@ var lastKnownWindowSize = {w: 0, h: 0};
 
 function setValues() {
 	gap = floor(width/25);
-	tile = floor((width-gap*2)/10);
-	othertile = floor((width-gap*3)/15);
+	tile = (width-gap*2)/10;
+	othertile = (width-gap*3)/15;
 
 	pointsBaner = new function () {
 		this.x = gap;
 		this.y = gap;
 		this.w = width-(gap*2);
 		this.h = this.w*130/512;
-		this.fontSize = this.h*1.18+"px FontAwesome";
+		this.fontSize = this.h*0.98+"px FontAwesome";
 		this.textX = this.x+this.w/2;
-		this.textY = this.y+this.h*0.905;
+		this.textY = this.y+this.h*0.83;
 	}
 
 	gridstart = {
@@ -58,16 +58,16 @@ function setValues() {
 		this.y = optionsstarts[0].y + othertile*5 + gap;
 		this.w = width-(gap*2);
 		this.h = height - this.y - gap;
-		this.fontSize = this.h*1.18+"px FontAwesome";
+		this.fontSize = this.h*0.98+"px FontAwesome";
 		this.textX = this.x+this.w/2;
-		this.textY = this.y+this.h*0.905;
+		this.textY = this.y+this.h*0.83;
 	}
 }
 
 var sources = {
-	gridBG: 'img/stone.jpg',
-	tile: 'img/bg03.jpg',
-	bg: 'img/bg02.jpg',
+	gridBG: 'img/gridbg.jpg',
+	tile: 'img/tile.png',
+	bg: 'img/bg.jpg',
 	pointsBg: 'img/wood2.jpg',
 }
 
@@ -244,15 +244,14 @@ function mouseReleased() {
 
 	checkGrid();
 
-	if(gameLost()) {
-		lost=true;
-	}
+	checkIfGameLost()
 }
 
-function gameLost() {
+function checkIfGameLost() {
 	if(options[0]==null && options[1]==null && options[2]==null) {
 		return false;
 	}
+	lost = false;
 	for (var i=0; i<options.length; i++) {
 		var option = options[i];
 		if(option==null) { continue; }
@@ -275,12 +274,12 @@ function gameLost() {
 					}
 				}
 				if(figureFitsHere) {
-					return false;
+					return;
 				}
 			}
 		}
 	}
-	return true;
+	lost = true;
 }
 
 function mouseContained(x1, y1, x2, y2) {

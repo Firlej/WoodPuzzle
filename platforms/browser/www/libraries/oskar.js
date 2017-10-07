@@ -53,7 +53,7 @@ function loadImages(sources) {
         images[src].onload = function() {
             loadedImages++;
             if(loadedImages==numImages) {
-                console.log("Images loaded!")
+                //console.log("Images loaded!");
                 imagesLoaded = true;
             }
         };
@@ -149,6 +149,7 @@ function addEventListeners() {
     });
 
     window.onresize = function(event) {
+        setLibValues();
         windowResized();
     };
 
