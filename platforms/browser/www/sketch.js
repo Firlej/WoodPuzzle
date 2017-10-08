@@ -47,6 +47,8 @@ function setValues() {
 	gridstart = {
 		x: gap,
 		y: pointsBaner.y+pointsBaner.h+gap,
+		w: tile*gridsize,
+		h: tile*gridsize
 	};
 
 	optionsstarts[0] = { x: gap, y: gridstart.y+gridsize*tile+gap };
@@ -65,10 +67,10 @@ function setValues() {
 }
 
 var sources = {
-	gridBG: 'img/gridbg.jpg',
+	gridBG: 'img/gridbg6.png',
 	tile: 'img/tile.png',
-	bg: 'img/bg.jpg',
-	pointsBg: 'img/wood2.jpg',
+	bg: 'img/bg6.jpg',
+	pointsBg: 'img/tile.png',
 }
 
 function setup(callback) {
@@ -101,7 +103,7 @@ function draw() {
 	drawHighscoreBaner();
 
 	drawGridBG();
-	drawOptionsBG();
+	//drawOptionsBG();
 
 	fillOptions();
 
@@ -314,22 +316,7 @@ function drawGrid() {
 }
 
 function drawGridBG() {
-	image(images.gridBG, gridstart.x, gridstart.y, tile*gridsize, tile*gridsize);
-
-	/*noStroke();
-	var c = 0;
-	var drawY = gridstart.y;
-	for(var y=0; y<gridsize; y++) {
-		var drawX = gridstart.x;
-		for(var x=0; x<gridsize; x++) {
-			if (c%2) { fill(100, 40 , 30); } else { fill(120, 50 , 40); }
-			rect(drawX, drawY, tile, tile);
-			c++;
-			drawX+=tile
-		}
-		c++;
-		drawY+=tile
-	}*/
+	image(images.gridBG, gridstart.x, gridstart.y, gridstart.w, gridstart.h);
 }
 
 function drawOptions() {
