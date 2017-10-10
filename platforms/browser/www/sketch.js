@@ -1,6 +1,7 @@
 var tile=othertile = null;
 var gridsize = 10;
 var gap;
+var borderWidth = 0;
 
 var gridstart;
 var optionsstarts = [];
@@ -30,8 +31,9 @@ var pickedLerpRate = 0.12;
 var lastKnownWindowSize = {w: 0, h: 0};
 
 function setValues() {
+	borderWidth = gap/2;
 	gap = floor(width/25);
-	tile = (width-gap*2)/10;
+	tile = (width-gap*2-borderWidth*2)/10;
 	othertile = (width-gap*3)/15;
 
 	pointsBaner = new function () {
@@ -43,15 +45,20 @@ function setValues() {
 		this.textX = this.x+this.w/2;
 		this.textY = this.y+this.h*0.83;
 	}
-
-	gridstart = {
+	gridBorder = {
+		w: tile*gridsize+borderWidth*2,
+		h: tile*gridsize+borderWidth*2,
 		x: gap,
-		y: pointsBaner.y+pointsBaner.h+gap,
+		y: pointsBaner.y+pointsBaner.h+gap
+	};
+	gridstart = {
+		x: gap+borderWidth,
+		y: pointsBaner.y+pointsBaner.h+gap+borderWidth,
 		w: tile*gridsize,
 		h: tile*gridsize
 	};
 
-	optionsstarts[0] = { x: gap, y: gridstart.y+gridsize*tile+gap };
+	optionsstarts[0] = { x: gap, y: gridBorder.y+gridBorder.h+gap };
 	optionsstarts[1] = { x: optionsstarts[0].x + gap/2 + othertile*5, y: optionsstarts[0].y };
 	optionsstarts[2] = { x: optionsstarts[1].x + gap/2 + othertile*5, y: optionsstarts[0].y };
 
@@ -67,10 +74,10 @@ function setValues() {
 }
 
 var sources = {
-	gridBG: 'img/gridbg6.png',
+	gridBG: 'img/gridbg.png',
 	tile: 'img/tile.png',
-	bg: 'img/bg6.jpg',
-	pointsBg: 'img/tile.png',
+	bg: 'img/bg.png',
+	pointsBg: 'img/baner.png',
 }
 
 function setup(callback) {
@@ -103,7 +110,7 @@ function draw() {
 	drawHighscoreBaner();
 
 	drawGridBG();
-	//drawOptionsBG();
+	drawOptionsBG();
 
 	fillOptions();
 
@@ -301,7 +308,7 @@ function fillOptions() {
 }
 
 function drawGrid() {
-	fill(color(40,40,40, 200));
+	fill(rgba(40,40,40, 200));
 	var drawY = gridstart.y;
 	for(var y=0; y<grid.length; y++) {
 		var drawX = gridstart.x;
@@ -316,6 +323,16 @@ function drawGrid() {
 }
 
 function drawGridBG() {
+	var c = 39/floor(borderWidth);
+	for(var i=0; i<borderWidth; i++) {
+		stroke( hsl(32, 19, 39-i*c) );
+		beginShape();
+			vertex(gridBorder.x+i, gridBorder.y+i);
+			vertex(gridBorder.x+i + gridBorder.w-2*i, gridBorder.y+i);
+			vertex(gridBorder.x+i + gridBorder.w-2*i, gridBorder.y+i + gridBorder.h-2*i);
+			vertex(gridBorder.x+i, gridBorder.y+i + gridBorder.h-2*i);
+		endShape();
+	}
 	image(images.gridBG, gridstart.x, gridstart.y, gridstart.w, gridstart.h);
 }
 
@@ -361,7 +378,7 @@ function drawOptionsBG() {
 		for(var y=0; y<5; y++) {
 			var drawX = startx;
 			for(var x=0; x<5; x++) {
-				if (c%2) { fill(color(211, 209 , 173)); } else { fill(color(191, 189 , 153)); }
+				if (c%2) { fill(rgba(211, 209 , 173)); } else { fill(rgba(191, 189 , 153)); }
 				rect(drawX, drawY, othertile, othertile);
 				c++;
 				drawX += othertile;
@@ -372,7 +389,7 @@ function drawOptionsBG() {
 }
 
 function drawLoadingAnimation() {
-	background(color(51,51,51));
+	background(rgba(51,51,51));
 	textAlign("center");
 	push();
 		fill('white');
@@ -393,7 +410,7 @@ function drawHighscoreBaner() {
 	image(images.pointsBg, highscoreBaner.x, highscoreBaner.y, highscoreBaner.w, highscoreBaner.h);
 	font(highscoreBaner.fontSize);
 	textAlign("center");
-	text(highscore, highscoreBaner.textX, highscoreBaner.textY);
+	text("BEST "+highscore, highscoreBaner.textX, highscoreBaner.textY);
 }
 
 function drawBackground() {

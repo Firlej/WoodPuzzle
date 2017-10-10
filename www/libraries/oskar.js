@@ -20,6 +20,7 @@ window.onload = function() {
     canvas = $('canvas')[0];
     ctx = canvas.getContext('2d');
     ctx.imageSmoothingEnabled = false;
+    ctx.stroke();
 
     addEventListeners();
 
@@ -107,15 +108,25 @@ function text(text, x, y) {
     ctx.fillText(text, x, y);
 }
 
-function color(r, g, b, a) {
+function rgba(r, g, b, a) {
+    r = floor(r);
+    g = floor(g);
+    b = floor(b);
     if (typeof a === 'undefined') { a = 255; }
+    else { a = floor(a); }
     return "rgba("+r+", "+g+", "+b+", "+a+")";
+}
+
+function hsl(h, s, l) {
+    h = floor(h);
+    s = floor(s);
+    l = floor(l);
+    return "hsl("+h+", "+s+"%, "+l+"%)";
 }
 
 function lerp(start, end, rate) {
     return (end-start)*rate + start;
 }
-
 
 function floor(a) {
     return Math.floor(a);
@@ -129,6 +140,11 @@ function random(a, b) {
 function push() { ctx.save() };
 function translate(x, y) { ctx.translate(x, y); }
 function pop() { ctx.restore(); }
+
+function beginShape() { ctx.beginPath(); }
+function vertex(x, y) { ctx.lineTo(x, y); }
+function endShape() { ctx.closePath(); ctx.stroke(); }
+function stroke(color) { ctx.strokeStyle = color; }
 
 function mousePressed() {}
 function mouseReleased() {}
