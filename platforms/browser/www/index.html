@@ -12,21 +12,106 @@
 	<script type="text/javascript" src="figures.js"></script>
 
 	<style type="text/css">
-		html, body, div, html.touch body {
+		/* body {
+			background-image: url("img/bg.png");
+			background-size: 50%;
+		} */
+		html, body, html.touch body {
 			padding: 0px;
 			margin: 0px;
 			overflow: hidden;
 			font-family: "Lucida Console", Times, serif;
 			touch-action: none;
 		}
+		@font-face {
+			font-family: 'FontAwesome';
+			src: url('font.ttf');
+		}
 		#gameArea {
 			position: absolute;
 			left: 50%;
 			top: 50%;
 		}
-		@font-face {
+		#startScreen {
+			width: 100%;
+			height: 100%;
+			background-image: url("img/bg.png");
+			position: absolute;
+			top: 0;
+			left: 0;
 			font-family: 'FontAwesome';
-			src: url('font.ttf');
+		}
+		#logo {
+			display: block;
+			width: 100%;
+			height: 100%;
+			padding-top: 3%;
+			text-align: center;
+			padding: auto;
+		}
+		#playButton {
+			background-image: url("img/bg.png");
+			position: absolute;
+			left: calc(50% - 50% / 2);
+			top: calc(50% - 10% / 2);
+			width: 50%;
+			height: 10%;
+			line-height: 100%;
+			text-align: center;
+			border: 1px solid black;
+		}
+
+		#lostScreen {
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
+			background-color: rgba(31, 31, 31, 0.6);
+		}
+		#lostBaner {
+			background-image: url("img/bg.png");
+			position: absolute;
+			left: calc(50% - 80% / 2);
+			top: calc(50% - 10% / 2);
+			width: 80%;
+			height: 10%;
+			line-height: 100%;
+			text-align: center;
+			border: 1px solid black;
+		}
+		#lostScore{
+			background-image: url("img/bg.png");
+			position: absolute;
+			top: 20%;
+			left: 15%;
+			width: 70%;
+			height: 25%;
+			line-height: 100%;
+			text-align: center;
+			border: 1px solid black;
+		}
+		#back{
+			background-image: url("img/bg.png");
+			position: absolute;
+			bottom: 40%;
+			left: 10%;
+			width: 35%;
+			height: 10%;
+			line-height: 100%;
+			text-align: center;
+			border: 1px solid black;
+		}
+		#playAgain{
+			background-image: url("img/bg.png");
+			position: absolute;
+			bottom: 40%;
+			right: 10%;
+			width: 35%;
+			height: 10%;
+			line-height: 100%;
+			text-align: center;
+			border: 1px solid black;
 		}
 	</style>
 </head>
@@ -34,7 +119,43 @@
 <body bgcolor="#1F1F1F">
 	<div id="gameArea">
 		<canvas></canvas>
+
+		<div id="startScreen">
+			<span id="logo">WOOD<br>PUZZLE</span>
+			<div id="playButton">
+				START
+			</div>
+		</div>
+
+		<div id="lostScreen">
+				<div id="lostScore">SCORE:</div>
+				<div id="back">BACK</div>
+				<div id="playAgain">AGAIN</div>
+				</div>
+		</div>
+
 	</div>
+
+	<script type="text/javascript">
+		$("#startScreen").toggle();
+		//$("#lostScreen").toggle();
+
+		$('#back').click(function(){
+			$("#lostScreen").fadeOut('slow');
+			$("#startScreen").fadeIn('slow');
+
+		});
+		$('#playAgain').click(function(){
+			$("#startScreen").fadeOut('slow');
+			$("#lostScreen").fadeOut('slow');
+			resetGame();
+		});
+
+		$('#playButton').click(function(){
+			$("#startScreen").fadeOut('slow');
+		});
+	</script>
+
 </body>
 
 </html>

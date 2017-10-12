@@ -25,6 +25,8 @@ var pickedDrawing = {
 	y: 0
 }
 
+var mouseFreezed = false;
+
 var yMouseOffset = -3;
 var pickedLerpRate = 0.12;
 
@@ -138,6 +140,8 @@ function windowResized() {
 		gameArea.style.width = newWidth + 'px';
 		gameArea.style.height = newHeight + 'px';
 	}
+	gameArea.style.fontSize = ($('#gameArea').width()*$('#gameArea').height() / 9500) + 'px';
+
 	gameArea.style.marginTop = (-newHeight / 2) + 'px';
 	gameArea.style.marginLeft = (-newWidth / 2) + 'px';
 
@@ -207,6 +211,7 @@ function checkGrid() {
 }
 
 function mousePressed() {
+	if (mouseFreezed) { return; }
 	if( lost ) {
 		resetGame();
 		return;
@@ -288,7 +293,13 @@ function checkIfGameLost() {
 			}
 		}
 	}
+	endGame();
+}
+
+function endGame() {
 	lost = true;
+	$('#lostScore').text(points);
+	$("#lostScreen").fadeIn('slow');
 }
 
 function mouseContained(x1, y1, x2, y2) {
@@ -337,11 +348,10 @@ function drawGridBG() {
 }
 
 function drawOptions() {
-	if (pickedoption || pickedoption==0) {
+	if (pickedoption != null) {
 		pickedDrawing.x = lerp(pickedDrawing.x, mouseX, pickedLerpRate);
 		pickedDrawing.y = lerp(pickedDrawing.y, mouseY+yMouseOffset*tile, pickedLerpRate);
 	}
-	
 	for(var i=0; i<options.length; i++) {
 		figure = options[i];
 		if (figure==null) { continue; }
@@ -372,7 +382,6 @@ function drawOptionsBG() {
 	drawOptionBackground(optionsstarts[1].x, optionsstarts[1].y);
 	drawOptionBackground(optionsstarts[2].x, optionsstarts[2].y);
 	function drawOptionBackground(startx, starty) {
-		//noStroke();
 		var c = 0;
 		var drawY = starty;
 		for(var y=0; y<5; y++) {
@@ -402,7 +411,6 @@ function drawPointsBaner() {
 	image(images.pointsBg, pointsBaner.x, pointsBaner.y, pointsBaner.w, pointsBaner.h);
 	font(pointsBaner.fontSize);
 	textAlign("center");
-	if(lost) { fill('blue'); }
 	text(points, pointsBaner.textX, pointsBaner.textY);
 }
 
