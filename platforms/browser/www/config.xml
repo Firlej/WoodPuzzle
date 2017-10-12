@@ -7,6 +7,7 @@
     <author>
         Quaint
     </author>
+    <icon src="icon.png" />
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />

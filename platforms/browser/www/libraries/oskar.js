@@ -19,6 +19,9 @@ var frameCount = 0;
 window.onload = function() {
     canvas = $('canvas')[0];
     ctx = canvas.getContext('2d');
+    ctx.mozImageSmoothingEnabled = false;
+    ctx.webkitImageSmoothingEnabled = false;
+    ctx.msImageSmoothingEnabled = false;
     ctx.imageSmoothingEnabled = false;
     ctx.stroke();
 
