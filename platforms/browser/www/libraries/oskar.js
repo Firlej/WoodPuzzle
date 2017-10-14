@@ -17,7 +17,7 @@ var PI = Math.PI;
 var frameCount = 0;
 
 window.onload = function() {
-    canvas = $('canvas')[0];
+    canvas = document.getElementById('canvas');
     ctx = canvas.getContext('2d');
     ctx.mozImageSmoothingEnabled = false;
     ctx.webkitImageSmoothingEnabled = false;

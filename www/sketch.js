@@ -86,10 +86,10 @@ function setup(callback) {
 	loadImages(sources);
 
 	setValues();
-
 	windowResized();
-
+	
 	resetGame();
+	getLocalStorage();
 
 	callback();
 }
@@ -112,7 +112,7 @@ function draw() {
 	drawHighscoreBaner();
 
 	drawGridBG();
-	drawOptionsBG();
+	//drawOptionsBG();
 
 	fillOptions();
 
@@ -149,6 +149,23 @@ function windowResized() {
 	setValues();
 }
 
+
+function getLocalStorage() {
+	highscore = getFromLocalStorage('highscore') ? parseInt(getFromLocalStorage('highscore')) : 0;
+	points = getFromLocalStorage('points') ? parseInt(getFromLocalStorage('points')) : 0;
+	if (localStorage.grid) {
+		grid = JSON.parse(localStorage.grid);
+	}
+	if (getFromLocalStorage('options')) {
+		options = JSON.parse(getFromLocalStorage('options'));
+	}	
+}
+function saveToLocalStorage(key, value) {
+	localStorage.setItem(key, JSON.stringify(value) );
+}
+function getFromLocalStorage(key) {
+	return localStorage[key];
+}
 function resetGame() {
 	cleanGrid();
 	options = [null, null, null];
@@ -168,8 +185,10 @@ function cleanGrid() {
 
 function addPoints(amount) {
 	points+=amount;
+	saveToLocalStorage("points", points);
 	if (points>highscore) {
 		highscore = points;
+		saveToLocalStorage("highscore", highscore);
 	}
 }
 
@@ -237,11 +256,11 @@ function mouseReleased() {
 			var xx = x+xindex;
 			if (option[y][x]==1) {
 				if (grid[yy]===undefined || grid[yy][xx]===undefined) {
-					// Figure off grid 
+					//console.log("Figure off grid");
 					pickedoption = null; return;
 				} else {
 					if (grid[yy][xx] == 1) {
-						// Place taken
+						//console.log("Place taken");
 						pickedoption = null; return;
 					}
 					indexes.push({y: yy, x: xx});
@@ -256,10 +275,16 @@ function mouseReleased() {
 	options[pickedoption] = null;
 	pickedoption = null;
 
+	saveToLocalStorage("grid", grid);
+	saveToLocalStorage("options", options);
+
 	checkGrid();
 
-	checkIfGameLost()
+	checkIfGameLost();
+
 }
+
+
 
 function checkIfGameLost() {
 	if(options[0]==null && options[1]==null && options[2]==null) {
