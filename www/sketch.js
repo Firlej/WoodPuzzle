@@ -19,6 +19,7 @@ var ptx=pty=tx=ty=0;
 var gridBG;
 
 var lost = false;
+var gameReady = false;
 
 var pickedDrawing = {
 	x: 0,
@@ -91,6 +92,8 @@ function setup(callback) {
 	resetGame();
 	getLocalStorage();
 
+	gameReady = true;
+
 	callback();
 }
 
@@ -112,7 +115,7 @@ function draw() {
 	drawHighscoreBaner();
 
 	drawGridBG();
-	//drawOptionsBG();
+	drawOptionsBG();
 
 	fillOptions();
 
@@ -158,7 +161,7 @@ function getLocalStorage() {
 	}
 	if (getFromLocalStorage('options')) {
 		options = JSON.parse(getFromLocalStorage('options'));
-	}	
+	}
 }
 function saveToLocalStorage(key, value) {
 	localStorage.setItem(key, JSON.stringify(value) );
@@ -172,6 +175,11 @@ function resetGame() {
 	fillOptions();
 	points = 0;
 	lost = false;
+
+	saveToLocalStorage("points", points);
+	saveToLocalStorage("highscore", highscore);
+	saveToLocalStorage("grid", grid);
+	saveToLocalStorage("options", options);
 }
 
 function cleanGrid() {
@@ -218,21 +226,20 @@ function checkGrid() {
 		for(var j=0; j<gridsize; j++) {
 			grid[j][x] = 0;
 		}
-		addPoints(gridsize);
 	}
 	for(var i=0; i<rowsToRemove.length; i++) {
 		var y = rowsToRemove[i];
 		for(var j=0; j<gridsize; j++) {
 			grid[y][j] = 0;
 		}
-		addPoints(gridsize);
 	}
+	var pointsToAdd = (colsToRemove.length+rowsToRemove.length)*gridsize;
+	addPoints(pointsToAdd);
 }
 
 function mousePressed() {
 	if (mouseFreezed) { return; }
 	if( lost ) {
-		resetGame();
 		return;
 	}
 	for(var i=0; i<optionsstarts.length; i++) {
@@ -275,13 +282,14 @@ function mouseReleased() {
 	options[pickedoption] = null;
 	pickedoption = null;
 
+	fillOptions();
+
 	saveToLocalStorage("grid", grid);
 	saveToLocalStorage("options", options);
 
 	checkGrid();
 
 	checkIfGameLost();
-
 }
 
 
@@ -340,6 +348,7 @@ function fillOptions() {
 		for(var i=0; i<options.length; i++) {
 			options[i] = figures[floor(random(0, figures.length))].slice();
 		}
+		//saveToLocalStorage("options", options);
 	}
 }
 
@@ -435,6 +444,9 @@ function drawLoadingAnimation() {
 function drawPointsBaner() {
 	image(images.pointsBg, pointsBaner.x, pointsBaner.y, pointsBaner.w, pointsBaner.h);
 	font(pointsBaner.fontSize);
+	if (typeof botLoading != "undefined" && botLoading) {
+		fill('blue');
+	}
 	textAlign("center");
 	text(points, pointsBaner.textX, pointsBaner.textY);
 }
