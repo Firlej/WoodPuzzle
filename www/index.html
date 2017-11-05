@@ -143,8 +143,8 @@
 	</div>
 
 	<script type="text/javascript">
-		$("#canvas").toggle();
-		//$("#startScreen").toggle();
+		//$("#canvas").toggle();
+		$("#startScreen").toggle();
 		
 		//$("#lostScreen").toggle();
 
@@ -162,7 +162,7 @@
 		$('#playButton').click(function(){
 			$("#startScreen").fadeOut('slow');
 			$("#canvas").fadeIn('slow');
-			setTimeout(checkIfGameLost, 1000);
+			setTimeout(checkIfGameLost, 700);
 		});
 	</script>
 

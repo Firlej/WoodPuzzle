@@ -154,6 +154,7 @@ function windowResized() {
 
 
 function getLocalStorage() {
+	//console.log(localStorage);
 	highscore = getFromLocalStorage('highscore') ? parseInt(getFromLocalStorage('highscore')) : 0;
 	points = getFromLocalStorage('points') ? parseInt(getFromLocalStorage('points')) : 0;
 	if (localStorage.grid) {
@@ -176,10 +177,10 @@ function resetGame() {
 	points = 0;
 	lost = false;
 
-	saveToLocalStorage("points", points);
-	saveToLocalStorage("highscore", highscore);
 	saveToLocalStorage("grid", grid);
 	saveToLocalStorage("options", options);
+	saveToLocalStorage("points", points);
+	saveToLocalStorage("highscore", highscore);
 }
 
 function cleanGrid() {
