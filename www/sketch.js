@@ -152,7 +152,6 @@ function windowResized() {
 	setValues();
 }
 
-
 function getLocalStorage() {
 	//console.log(localStorage);
 	highscore = getFromLocalStorage('highscore') ? parseInt(getFromLocalStorage('highscore')) : 0;
