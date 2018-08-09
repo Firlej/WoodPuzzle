@@ -235,6 +235,9 @@ function checkGrid() {
 	}
 	var pointsToAdd = (colsToRemove.length+rowsToRemove.length)*gridsize;
 	addPoints(pointsToAdd);
+
+	saveToLocalStorage("grid", grid);
+	saveToLocalStorage("options", options);
 }
 
 function mousePressed() {
@@ -282,12 +285,12 @@ function mouseReleased() {
 	options[pickedoption] = null;
 	pickedoption = null;
 
+	checkGrid();
+	
 	fillOptions();
 
 	saveToLocalStorage("grid", grid);
 	saveToLocalStorage("options", options);
-
-	checkGrid();
 
 	checkIfGameLost();
 }
@@ -296,7 +299,7 @@ function mouseReleased() {
 
 function checkIfGameLost() {
 	if(options[0]==null && options[1]==null && options[2]==null) {
-		return false;
+		fillOptions();
 	}
 	lost = false;
 	for (var i=0; i<options.length; i++) {
