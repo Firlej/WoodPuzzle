@@ -7,9 +7,16 @@
         "files": {}
     },
     "installed_plugins": {
+        "cordova-plugin-admob-simple": {
+            "PACKAGE_NAME": "com.quaint.woodpuzzle"
+        },
         "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "io.cordova.hellocordova"
+            "PACKAGE_NAME": "com.quaint.woodpuzzle"
         }
     },
-    "dependent_plugins": {}
+    "dependent_plugins": {
+        "cordova-admob-sdklibs": {
+            "PACKAGE_NAME": "com.quaint.woodpuzzle"
+        }
+    }
 }

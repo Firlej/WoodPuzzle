@@ -8,8 +8,9 @@
 	<script type="text/javascript" src="libraries/jquery-3.2.1.js"></script>
 	<script type="text/javascript" src="libraries/oskar.js"></script>
 
-	<script type="text/javascript" src="sketch.js"></script>
 	<script type="text/javascript" src="figures.js"></script>
+	<script type="text/javascript" src="sketch.js"></script>
+	<script type="text/javascript" src="bot.js"></script>
 
 	<style type="text/css">
 		/* body {
@@ -142,8 +143,9 @@
 	</div>
 
 	<script type="text/javascript">
-		$("#startScreen").fadeIn('slow');
-		//$("#startScreen").toggle();
+		//$("#canvas").toggle();
+		$("#startScreen").toggle();
+		
 		//$("#lostScreen").toggle();
 
 		$('#back').click(function(){
@@ -160,8 +162,12 @@
 		$('#playButton').click(function(){
 			$("#startScreen").fadeOut('slow');
 			$("#canvas").fadeIn('slow');
+			setTimeout(checkIfGameLost, 700);
 		});
 	</script>
+		
+	<script type="text/javascript" src="cordova.js"></script>
+	<script type="text/javascript" src="js/index.js"></script>
 
 </body>
 

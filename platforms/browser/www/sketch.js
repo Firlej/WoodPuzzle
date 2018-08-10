@@ -19,16 +19,17 @@ var ptx=pty=tx=ty=0;
 var gridBG;
 
 var lost = false;
+var gameReady = false;
 
 var pickedDrawing = {
 	x: 0,
 	y: 0
-}
+};
 
-var mouseFreezed = false;
-
-var yMouseOffset = -3;
-var pickedLerpRate = 0.12;
+var constyMouseOffset = -6;
+var xMouseOffset=0;
+var yMouseOffset=0;
+var pickedLerpRate = 0.13;
 
 var lastKnownWindowSize = {w: 0, h: 0};
 
@@ -39,10 +40,10 @@ function setValues() {
 	othertile = (width-gap*3)/15;
 
 	pointsBaner = new function () {
-		this.x = gap;
-		this.y = gap;
 		this.w = width-(gap*2);
 		this.h = this.w*130/512;
+		this.x = (width-this.w)/2;
+		this.y = gap;
 		this.fontSize = this.h*0.98+"px FontAwesome";
 		this.textX = this.x+this.w/2;
 		this.textY = this.y+this.h*0.83;
@@ -91,6 +92,8 @@ function setup(callback) {
 	resetGame();
 	getLocalStorage();
 
+	gameReady = true;
+
 	callback();
 }
 
@@ -112,12 +115,48 @@ function draw() {
 	drawHighscoreBaner();
 
 	drawGridBG();
-	//drawOptionsBG();
+	drawOptionsBG();
 
-	fillOptions();
+	drawShadowFigure();
 
 	drawGrid();
 	drawOptions();
+}
+
+function checkIfFigureFits(xx, yy, option) {
+	var figureFitsHere = true;
+	for(var y=0; y<5; y++) {
+		yindex = yy+y;
+		for(var x=0; x<5; x++) {
+			xindex = xx + x;
+			if (option[y][x]==1) {
+				if (grid[yindex]===undefined || grid[yindex][xindex]===undefined || grid[yindex][xindex] == 1) {
+					y=x=5;
+					figureFitsHere = false;
+					break;
+				}
+			}
+		}
+	}
+	return figureFitsHere;
+}
+
+function drawShadowFigure() {
+	if (pickedoption!=null) {
+		var xindex = floor((mouseX-gridstart.x)/tile+xMouseOffset)-2;
+		var yindex = floor((mouseY-gridstart.y)/tile+yMouseOffset)-2;
+		console.log(xindex, yindex);
+
+		fill(rgba(1,1,1,0.3));
+		for(let y=0; y<5; y++) {
+			for(let x=0; x<5; x++) {
+				let option = options[pickedoption];
+				if (option[y][x]==1 && checkIfFigureFits(xindex, yindex, option)) {
+					rect(gridstart.x+(xindex+x)*tile, gridstart.y+(yindex+y)*tile, tile, tile);
+				}
+			}
+		}
+	}
 }
 
 function windowResized() {
@@ -149,8 +188,8 @@ function windowResized() {
 	setValues();
 }
 
-
 function getLocalStorage() {
+	//console.log(localStorage);
 	highscore = getFromLocalStorage('highscore') ? parseInt(getFromLocalStorage('highscore')) : 0;
 	points = getFromLocalStorage('points') ? parseInt(getFromLocalStorage('points')) : 0;
 	if (localStorage.grid) {
@@ -158,7 +197,7 @@ function getLocalStorage() {
 	}
 	if (getFromLocalStorage('options')) {
 		options = JSON.parse(getFromLocalStorage('options'));
-	}	
+	}
 }
 function saveToLocalStorage(key, value) {
 	localStorage.setItem(key, JSON.stringify(value) );
@@ -172,6 +211,11 @@ function resetGame() {
 	fillOptions();
 	points = 0;
 	lost = false;
+
+	saveToLocalStorage("grid", grid);
+	saveToLocalStorage("options", options);
+	saveToLocalStorage("points", points);
+	saveToLocalStorage("highscore", highscore);
 }
 
 function cleanGrid() {
@@ -218,21 +262,22 @@ function checkGrid() {
 		for(var j=0; j<gridsize; j++) {
 			grid[j][x] = 0;
 		}
-		addPoints(gridsize);
 	}
 	for(var i=0; i<rowsToRemove.length; i++) {
 		var y = rowsToRemove[i];
 		for(var j=0; j<gridsize; j++) {
 			grid[y][j] = 0;
 		}
-		addPoints(gridsize);
 	}
+	var pointsToAdd = (colsToRemove.length+rowsToRemove.length)*gridsize;
+	addPoints(pointsToAdd);
+
+	saveToLocalStorage("grid", grid);
+	saveToLocalStorage("options", options);
 }
 
 function mousePressed() {
-	if (mouseFreezed) { return; }
 	if( lost ) {
-		resetGame();
 		return;
 	}
 	for(var i=0; i<optionsstarts.length; i++) {
@@ -241,13 +286,17 @@ function mousePressed() {
 			pickedoption = i;
 			pickedDrawing.x = optionsstarts[i].x+othertile*2.5;
 			pickedDrawing.y = optionsstarts[i].y+othertile*2.5;
+
+			xMouseOffset = calcFigureOffset(options[i]).x;
+			yMouseOffset = calcFigureOffset(options[i]).y + constyMouseOffset;
 		}
 	}
 }
+
 function mouseReleased() {
 	if (pickedoption == null) { return; }
 	var option = options[pickedoption];
-	var xindex = floor((mouseX-gridstart.x)/tile)-2;
+	var xindex = floor((mouseX-gridstart.x)/tile+xMouseOffset)-2;
 	var yindex = floor((mouseY-gridstart.y)/tile+yMouseOffset)-2;
 	indexes = [];
 	for(var y=0; y<5; y++) {
@@ -256,11 +305,11 @@ function mouseReleased() {
 			var xx = x+xindex;
 			if (option[y][x]==1) {
 				if (grid[yy]===undefined || grid[yy][xx]===undefined) {
-					console.log("Figure off grid");
+					//console.log("Figure off grid");
 					pickedoption = null; return;
 				} else {
 					if (grid[yy][xx] == 1) {
-						console.log("Place taken");
+						//console.log("Place taken");
 						pickedoption = null; return;
 					}
 					indexes.push({y: yy, x: xx});
@@ -275,20 +324,18 @@ function mouseReleased() {
 	options[pickedoption] = null;
 	pickedoption = null;
 
-	saveToLocalStorage("grid", grid);
-	saveToLocalStorage("options", options);
-
 	checkGrid();
+	
+	fillOptions();
+
+	saveToLocalStorage("grid", grid);
 
 	checkIfGameLost();
-
 }
-
-
 
 function checkIfGameLost() {
 	if(options[0]==null && options[1]==null && options[2]==null) {
-		return false;
+		fillOptions();
 	}
 	lost = false;
 	for (var i=0; i<options.length; i++) {
@@ -340,6 +387,7 @@ function fillOptions() {
 		for(var i=0; i<options.length; i++) {
 			options[i] = figures[floor(random(0, figures.length))].slice();
 		}
+		saveToLocalStorage("options", options);
 	}
 }
 
@@ -371,10 +419,17 @@ function drawGridBG() {
 	}
 	image(images.gridBG, gridstart.x, gridstart.y, gridstart.w, gridstart.h);
 }
-
+function keyPressed(k) {
+	if (k==32) {
+		options[0]=null;
+		options[1]=null;
+		options[2]=null;
+		fillOptions();
+	}
+}
 function drawOptions() {
 	if (pickedoption != null) {
-		pickedDrawing.x = lerp(pickedDrawing.x, mouseX, pickedLerpRate);
+		pickedDrawing.x = lerp(pickedDrawing.x, mouseX+xMouseOffset*tile, pickedLerpRate);
 		pickedDrawing.y = lerp(pickedDrawing.y, mouseY+yMouseOffset*tile, pickedLerpRate);
 	}
 	for(var i=0; i<options.length; i++) {
@@ -402,10 +457,56 @@ function drawOptions() {
 	}
 }
 
+function calcFigureOffset(figure) {
+	let yoffset = 0;
+	let good = true;
+	for(var y=4; y>=0; y--) {
+		for(var x=0; x<5; x++) {
+			if(figure[y][x]==1) {
+				good = false;
+				break;
+			}
+		}
+		if (!good) break;
+		yoffset++;
+	}
+
+	let xOffsetLeft = 0;
+	good = true;
+	for(let x=0; x<5; x++) {
+		for(var y=0; y<5; y++) {
+			if(figure[y][x]==1) {
+				good = false;
+				break;
+			}
+		}
+		if (!good) break;
+		xOffsetLeft++;
+	}
+
+	let xOffsetRight = 0;
+	good = true;
+	for(let x=4; x>=0; x--) {
+		for(var y=0; y<5; y++) {
+			if(figure[y][x]==1) {
+				good = false;
+				break;
+			}
+		}
+		if (!good) break;
+		xOffsetRight++;
+	}
+	return {
+		x: (xOffsetRight-xOffsetLeft)/2,
+		y: yoffset
+	};
+}
+
 function drawOptionsBG() {
 	drawOptionBackground(optionsstarts[0].x, optionsstarts[0].y);
 	drawOptionBackground(optionsstarts[1].x, optionsstarts[1].y);
 	drawOptionBackground(optionsstarts[2].x, optionsstarts[2].y);
+	
 	function drawOptionBackground(startx, starty) {
 		var c = 0;
 		var drawY = starty;
@@ -435,6 +536,9 @@ function drawLoadingAnimation() {
 function drawPointsBaner() {
 	image(images.pointsBg, pointsBaner.x, pointsBaner.y, pointsBaner.w, pointsBaner.h);
 	font(pointsBaner.fontSize);
+	if (typeof botLoading != "undefined" && botLoading) {
+		fill('blue');
+	}
 	textAlign("center");
 	text(points, pointsBaner.textX, pointsBaner.textY);
 }
