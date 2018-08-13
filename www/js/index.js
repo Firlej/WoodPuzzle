@@ -31,7 +31,7 @@ var app = {
 
         initAd();
         showBannerFunc();
-        showInterstitialFunc();
+        //showInterstitialFunc();
     },
 
     // Update DOM on a Received Event
