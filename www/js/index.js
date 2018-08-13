@@ -28,18 +28,21 @@ var app = {
     // 'pause', 'resume', etc.
     onDeviceReady: function() {
         this.receivedEvent('deviceready');
-        setInterval()
+
         initAd();
         showBannerFunc();
-        setInterval(function() {
-            points = Math.floor(Math.random()*1000);
-        }, 1000/120);
-        // window.plugins.AdMob.destroyBannerView();
-        // showInterstitialFunc();
+        showInterstitialFunc();
     },
 
     // Update DOM on a Received Event
     receivedEvent: function(id) {
+        var parentElement = document.getElementById(id);
+        var listeningElement = parentElement.querySelector('.listening');
+        var receivedElement = parentElement.querySelector('.received');
+
+        listeningElement.setAttribute('style', 'display:none;');
+        receivedElement.setAttribute('style', 'display:block;');
+
         console.log('Received Event: ' + id);
     }
 };

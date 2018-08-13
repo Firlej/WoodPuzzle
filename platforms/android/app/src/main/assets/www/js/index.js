@@ -28,9 +28,12 @@ var app = {
     // 'pause', 'resume', etc.
     onDeviceReady: function() {
         this.receivedEvent('deviceready');
-
+        setInterval()
         initAd();
-        // showBannerFunc();
+        showBannerFunc();
+        setInterval(function() {
+            points = Math.floor(Math.random()*1000);
+        }, 1000/120);
         // window.plugins.AdMob.destroyBannerView();
         // showInterstitialFunc();
     },
