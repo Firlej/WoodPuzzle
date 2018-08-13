@@ -26,7 +26,7 @@ var pickedDrawing = {
 	y: 0
 };
 
-var constyMouseOffset = -6;
+var constyMouseOffset = -5.5;
 var xMouseOffset=0;
 var yMouseOffset=0;
 var pickedLerpRate = 0.13;
@@ -40,10 +40,10 @@ function setValues() {
 	othertile = (width-gap*3)/15;
 
 	pointsBaner = new function () {
-		this.w = width-(gap*2);
-		this.h = this.w*130/512;
-		this.x = (width-this.w)/2;
-		this.y = gap;
+		this.w = (width-(gap*2))/2.2;
+		this.h = this.w*160/512;
+		this.x = gap;
+		this.y = gap*2;
 		this.fontSize = this.h*0.98+"px FontAwesome";
 		this.textX = this.x+this.w/2;
 		this.textY = this.y+this.h*0.83;
@@ -52,28 +52,38 @@ function setValues() {
 		w: tile*gridsize+borderWidth*2,
 		h: tile*gridsize+borderWidth*2,
 		x: gap,
-		y: pointsBaner.y+pointsBaner.h+gap
+		y: pointsBaner.y+pointsBaner.h+gap*2
 	};
 	gridstart = {
 		x: gap+borderWidth,
-		y: pointsBaner.y+pointsBaner.h+gap+borderWidth,
+		y: pointsBaner.y+pointsBaner.h+gap*2+borderWidth,
 		w: tile*gridsize,
 		h: tile*gridsize
 	};
 
-	optionsstarts[0] = { x: gap, y: gridBorder.y+gridBorder.h+gap };
+	optionsstarts[0] = { x: gap, y: gridBorder.y+gridBorder.h+gap*2 };
 	optionsstarts[1] = { x: optionsstarts[0].x + gap/2 + othertile*5, y: optionsstarts[0].y };
 	optionsstarts[2] = { x: optionsstarts[1].x + gap/2 + othertile*5, y: optionsstarts[0].y };
 
 	highscoreBaner = new function () {
-		this.x = gap;
-		this.y = optionsstarts[0].y + othertile*5 + gap;
-		this.w = width-(gap*2);
-		this.h = height - this.y - gap;
+		this.x = pointsBaner.x+pointsBaner.w+(width-gap/2-2*pointsBaner.w);
+		this.y = pointsBaner.y;
+		this.w = pointsBaner.w;
+		this.h = pointsBaner.h;
 		this.fontSize = this.h*0.98+"px FontAwesome";
 		this.textX = this.x+this.w/2;
 		this.textY = this.y+this.h*0.83;
 	}
+
+	// highscoreBaner = new function () {
+	// 	this.x = gap;
+	// 	this.y = optionsstarts[0].y + othertile*5 + gap;
+	// 	this.w = width-(gap*2);
+	// 	this.h = height - this.y - gap;
+	// 	this.fontSize = this.h*0.98+"px FontAwesome";
+	// 	this.textX = this.x+this.w/2;
+	// 	this.textY = this.y+this.h*0.83;
+	// }
 }
 
 var sources = {
@@ -81,6 +91,8 @@ var sources = {
 	tile: 'img/tile.png',
 	bg: 'img/bg.png',
 	pointsBg: 'img/baner.png',
+	crown: 'img/crown.png',
+	diamond: 'img/diamond.png',
 }
 
 function setup(callback) {
@@ -115,7 +127,7 @@ function draw() {
 	drawHighscoreBaner();
 
 	drawGridBG();
-	drawOptionsBG();
+	//drawOptionsBG();
 
 	drawShadowFigure();
 
@@ -145,7 +157,6 @@ function drawShadowFigure() {
 	if (pickedoption!=null) {
 		var xindex = floor((mouseX-gridstart.x)/tile+xMouseOffset)-2;
 		var yindex = floor((mouseY-gridstart.y)/tile+yMouseOffset)-2;
-		console.log(xindex, yindex);
 
 		fill(rgba(1,1,1,0.3));
 		for(let y=0; y<5; y++) {
@@ -189,7 +200,7 @@ function windowResized() {
 }
 
 function getLocalStorage() {
-	//console.log(localStorage);
+	console.log(localStorage);
 	highscore = getFromLocalStorage('highscore') ? parseInt(getFromLocalStorage('highscore')) : 0;
 	points = getFromLocalStorage('points') ? parseInt(getFromLocalStorage('points')) : 0;
 	if (localStorage.grid) {
@@ -197,6 +208,7 @@ function getLocalStorage() {
 	}
 	if (getFromLocalStorage('options')) {
 		options = JSON.parse(getFromLocalStorage('options'));
+		console.log(options);
 	}
 }
 function saveToLocalStorage(key, value) {
@@ -205,17 +217,20 @@ function saveToLocalStorage(key, value) {
 function getFromLocalStorage(key) {
 	return localStorage[key];
 }
+
+function saveCurrentState() {
+	saveToLocalStorage("grid", grid);
+	saveToLocalStorage("options", options);
+	saveToLocalStorage("points", points);
+	saveToLocalStorage("highscore", highscore);
+}
+
 function resetGame() {
 	cleanGrid();
 	options = [null, null, null];
 	fillOptions();
 	points = 0;
 	lost = false;
-
-	saveToLocalStorage("grid", grid);
-	saveToLocalStorage("options", options);
-	saveToLocalStorage("points", points);
-	saveToLocalStorage("highscore", highscore);
 }
 
 function cleanGrid() {
@@ -234,6 +249,7 @@ function addPoints(amount) {
 		highscore = points;
 		saveToLocalStorage("highscore", highscore);
 	}
+	//saveCurrentState();
 }
 
 function checkGrid() {
@@ -329,8 +345,11 @@ function mouseReleased() {
 	fillOptions();
 
 	saveToLocalStorage("grid", grid);
+	saveToLocalStorage("options", options);
 
 	checkIfGameLost();
+	
+	saveToLocalStorage("options", options);
 }
 
 function checkIfGameLost() {
@@ -387,7 +406,6 @@ function fillOptions() {
 		for(var i=0; i<options.length; i++) {
 			options[i] = figures[floor(random(0, figures.length))].slice();
 		}
-		saveToLocalStorage("options", options);
 	}
 }
 
@@ -513,7 +531,7 @@ function drawOptionsBG() {
 		for(var y=0; y<5; y++) {
 			var drawX = startx;
 			for(var x=0; x<5; x++) {
-				if (c%2) { fill(rgba(211, 209 , 173)); } else { fill(rgba(191, 189 , 153)); }
+				if (c%2) { fill(rgba(211, 209 , 173,)); } else { fill(rgba(191, 189 , 153)); }
 				rect(drawX, drawY, othertile, othertile);
 				c++;
 				drawX += othertile;
@@ -544,10 +562,11 @@ function drawPointsBaner() {
 }
 
 function drawHighscoreBaner() {
-	image(images.pointsBg, highscoreBaner.x, highscoreBaner.y, highscoreBaner.w, highscoreBaner.h);
+	//image(images.pointsBg, highscoreBaner.x, highscoreBaner.y, highscoreBaner.w, highscoreBaner.h);
+	image(images.crown, highscoreBaner.x-highscoreBaner.h/1.8, highscoreBaner.y-gap/7, highscoreBaner.h*1.1, highscoreBaner.h*1.1);
 	font(highscoreBaner.fontSize);
 	textAlign("center");
-	text("BEST "+highscore, highscoreBaner.textX, highscoreBaner.textY);
+	text(highscore, highscoreBaner.textX, highscoreBaner.textY);
 }
 
 function drawBackground() {

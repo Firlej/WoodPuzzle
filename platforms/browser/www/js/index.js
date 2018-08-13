@@ -30,8 +30,9 @@ var app = {
         this.receivedEvent('deviceready');
 
         initAd();
-        showBannerFunc();
-        showInterstitialFunc();
+        // showBannerFunc();
+        // window.plugins.AdMob.destroyBannerView();
+        // showInterstitialFunc();
     },
 
     // Update DOM on a Received Event
