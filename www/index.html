@@ -146,12 +146,10 @@
 		//$("#canvas").toggle();
 
 		$("#startScreen").toggle();
-		showBannerFunc();
 		
 		//$("#lostScreen").toggle();
 
 		$('#back').click(function(){
-			showBannerFunc();
 			$("#lostScreen").fadeOut('slow');
 			$("#startScreen").fadeIn('slow');
 		});
@@ -165,7 +163,6 @@
 		});
 
 		$('#playButton').click(function(){
-			window.plugins.AdMob.destroyBannerView();
 			$("#startScreen").fadeOut('slow');
 			$("#canvas").fadeIn('slow');
 			setTimeout(checkIfGameLost, 700);

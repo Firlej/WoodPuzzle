@@ -200,7 +200,6 @@ function windowResized() {
 }
 
 function getLocalStorage() {
-	console.log(localStorage);
 	highscore = getFromLocalStorage('highscore') ? parseInt(getFromLocalStorage('highscore')) : 0;
 	points = getFromLocalStorage('points') ? parseInt(getFromLocalStorage('points')) : 0;
 	if (localStorage.grid) {
@@ -208,7 +207,6 @@ function getLocalStorage() {
 	}
 	if (getFromLocalStorage('options')) {
 		options = JSON.parse(getFromLocalStorage('options'));
-		console.log(options);
 	}
 }
 function saveToLocalStorage(key, value) {
