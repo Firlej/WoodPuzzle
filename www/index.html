@@ -5,6 +5,8 @@
 	<title>Wood Puzzle</title>
 	<meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no' />
 	
+	<script type="text/javascript" src="cordova.js"></script>
+
 	<script type="text/javascript" src="libraries/jquery-3.2.1.js"></script>
 	<script type="text/javascript" src="libraries/oskar.js"></script>
 
@@ -62,6 +64,7 @@
 			height: 12.5%;
 			border: 1px solid black;
 			border-radius: 10%;
+			text-align: center;
 		}
 
 		#lostScreen {
@@ -128,19 +131,63 @@
 
 		<div id="startScreen">
 			<div id="logo"><img style="width: 100%" src="img/logo.png"></div>
-			<div id="playButton"><img style="width: 100%" src="img/start.png"></div>
+			<div id="playButton">
+				<img style="width: 100%; height: 100%; position: absolute; left: 0px; top: 0px;" src="img/start.png">
+				<!-- Start -->
+			</div>
 		</div>
 
 		<div id="lostScreen">
 				<div id="lostScore"></div>
-				<div id="back"><img style="width: 100%" src="img/back.png"></div>
-				<div id="playAgain"><img style="width: 100%" src="img/again.png"></div>
+				<div id="back"><img style="width: 100%; height: 100%" src="img/back.png"></div>
+				<div id="playAgain"><img style="width: 100%; height: 100%" src="img/again.png"></div>
 				</div>
 		</div>
 
 	</div>
 
 	<script type="text/javascript">
+
+		var admobid = {};
+		if( /(android)/i.test(navigator.userAgent) ) { 
+			admobid = { // for Android
+				banner: 'ca-app-pub-6869992474017983/9375997553',
+				interstitial: 'ca-app-pub-6869992474017983/1657046752'
+			};
+		} else if(/(ipod|iphone|ipad)/i.test(navigator.userAgent)) {
+			admobid = { // for iOS
+				banner: 'ca-app-pub-6869992474017983/4806197152',
+				interstitial: 'ca-app-pub-6869992474017983/7563979554'
+			};
+		} else {
+			admobid = { // for Windows Phone
+				banner: 'ca-app-pub-6869992474017983/8878394753',
+				interstitial: 'ca-app-pub-6869992474017983/1355127956'
+			};
+		}
+
+		function initApp() {
+			if (AdMob) {
+				AdMob.createBanner({
+					adId: admobid.banner,
+					position: AdMob.AD_POSITION.BOTTOM_CENTER,
+					autoShow: true,
+					success: function(){
+						alert('created banner');
+					},
+					error: function(){
+						alert('failed to create banner');
+					}
+				});
+			}
+		}
+
+		document.addEventListener('deviceready', initApp, false);
+
+
+		//
+
+
 		//$("#canvas").toggle();
 
 		$("#startScreen").toggle();
@@ -170,7 +217,6 @@
 
 	</script>
 		
-	<script type="text/javascript" src="cordova.js"></script>
 	<script type="text/javascript" src="js/index.js"></script>
 
 </body>

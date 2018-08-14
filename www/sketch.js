@@ -552,6 +552,7 @@ function drawLoadingAnimation() {
 function drawPointsBaner() {
 	image(images.pointsBg, pointsBaner.x, pointsBaner.y, pointsBaner.w, pointsBaner.h);
 	font(pointsBaner.fontSize);
+	fill('black');
 	if (typeof botLoading != "undefined" && botLoading) {
 		fill('blue');
 	}
@@ -564,6 +565,7 @@ function drawHighscoreBaner() {
 	image(images.crown, highscoreBaner.x-highscoreBaner.h/1.8, highscoreBaner.y-gap/7, highscoreBaner.h*1.1, highscoreBaner.h*1.1);
 	font(highscoreBaner.fontSize);
 	textAlign("center");
+	fill('black');
 	text(highscore, highscoreBaner.textX, highscoreBaner.textY);
 }
 

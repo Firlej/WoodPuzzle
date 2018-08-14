@@ -7,7 +7,6 @@
     <author email="">
         Quaint
     </author>
-    <icon src="icon.png" />
     <content src="index.html" />
     <plugin name="cordova-plugin-whitelist" spec="1" />
     <access origin="*" />
@@ -27,6 +26,6 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
-    <plugin name="cordova-plugin-admob-simple" spec="^3.3.4" />
-    <engine name="android" spec="^7.0.0" />
+    <engine name="android" spec="~7.0.0" />
+    <plugin name="cordova-plugin-admobpro" spec="^2.31.6" />
 </widget>

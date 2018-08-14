@@ -7,18 +7,18 @@
     "is_top_level": true,
     "variables": {}
   },
-  "cordova-plugin-admob-simple": {
+  "cordova-plugin-admobpro": {
     "source": {
       "type": "registry",
-      "id": "cordova-plugin-admob-simple"
+      "id": "cordova-plugin-admobpro"
     },
     "is_top_level": true,
     "variables": {}
   },
-  "cordova-admob-sdklibs": {
+  "cordova-plugin-extension": {
     "source": {
       "type": "registry",
-      "id": "cordova-admob-sdklibs"
+      "id": "cordova-plugin-extension"
     },
     "is_top_level": false,
     "variables": {}

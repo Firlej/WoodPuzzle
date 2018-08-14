@@ -4,18 +4,13 @@
         <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin" />
         <param name="onload" value="true" />
     </feature>
-    <feature name="AdMob">
-        <param name="android-package" value="com.cupertino.cordova.plugin.AdMob" />
-        <param name="onload" value="true" />
-    </feature>
-    <name>Wood Puzzle</name>
+    <name>WoodPuzzle</name>
     <description>
-        Simple Wood Puzzle
+        A sample Apache Cordova application that responds to the deviceready event.
     </description>
-    <author email="">
-        Quaint
+    <author email="dev@cordova.apache.org" href="http://cordova.io">
+        Apache Cordova Team
     </author>
-    <icon src="icon.png" />
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
@@ -26,7 +21,8 @@
     <allow-intent href="geo:*" />
     <allow-intent href="market:*" />
     <preference name="loglevel" value="DEBUG" />
-    <preference name="orienation" value="portrait" />
-    <preference name="Fullscreen" value="true" />
-    <preference name="StatusBarOverlaysWebView" value="true" />
+    <feature name="AdMob">
+        <param name="android-package" value="com.rjfun.cordova.admob.AdMobPlugin" />
+        <param name="onload" value="true" />
+    </feature>
 </widget>

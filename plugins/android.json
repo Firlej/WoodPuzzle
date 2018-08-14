@@ -10,12 +10,12 @@
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "com.quaint.woodpuzzle"
     },
-    "cordova-plugin-admob-simple": {
+    "cordova-plugin-admobpro": {
       "PACKAGE_NAME": "com.quaint.woodpuzzle"
     }
   },
   "dependent_plugins": {
-    "cordova-admob-sdklibs": {
+    "cordova-plugin-extension": {
       "PACKAGE_NAME": "com.quaint.woodpuzzle"
     }
   }
