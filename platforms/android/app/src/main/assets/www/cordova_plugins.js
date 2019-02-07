@@ -14,7 +14,7 @@ module.exports.metadata =
 {
   "cordova-plugin-whitelist": "1.3.3",
   "cordova-plugin-extension": "1.5.4",
-  "cordova-plugin-admobpro": "2.31.6"
+  "cordova-plugin-admobpro": "2.37.2"
 };
 // BOTTOM OF METADATA
 });

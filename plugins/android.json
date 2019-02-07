@@ -8,15 +8,16 @@
   },
   "installed_plugins": {
     "cordova-plugin-whitelist": {
-      "PACKAGE_NAME": "com.quaint.woodpuzzle"
+      "PACKAGE_NAME": "com.wood.puzzle"
     },
     "cordova-plugin-admobpro": {
-      "PACKAGE_NAME": "com.quaint.woodpuzzle"
+      "PLAY_SERVICES_VERSION": "16.0.0",
+      "PACKAGE_NAME": "com.wood.puzzle"
     }
   },
   "dependent_plugins": {
     "cordova-plugin-extension": {
-      "PACKAGE_NAME": "com.quaint.woodpuzzle"
+      "PACKAGE_NAME": "com.wood.puzzle"
     }
   }
 }

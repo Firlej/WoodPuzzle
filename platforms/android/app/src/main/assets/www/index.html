@@ -1,49 +1,190 @@
 <!DOCTYPE html>
-<!--
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
 <html>
-    <head>
-        <!--
-        Customize this policy to fit your own app's needs. For more guidance, see:
-            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
-        Some notes:
-            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
-            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
-            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
-                * Enable inline JS: add 'unsafe-inline' to default-src
-        -->
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
-        <meta name="format-detection" content="telephone=no">
-        <meta name="msapplication-tap-highlight" content="no">
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-        <link rel="stylesheet" type="text/css" href="css/index.css">
-        <title>Hello World</title>
-    </head>
-    <body>
-        <div class="app">
-            <h1>Apache Cordova</h1>
-            <div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
-            </div>
-        </div>
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
-    </body>
+<head>
+	<meta charset="UTF-8">
+	<title>Wood Puzzle</title>
+	<meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no' />
+	
+	<script type="text/javascript" src="cordova.js"></script>
+
+	<script type="text/javascript" src="libraries/jquery-3.2.1.js"></script>
+	<script type="text/javascript" src="libraries/oskar.js"></script>
+
+	<script type="text/javascript" src="figures.js"></script>
+	<script type="text/javascript" src="sketch.js"></script>
+	<script type="text/javascript" src="bot.js"></script>
+
+	<style type="text/css">
+		/* body {
+			background-image: url("img/bg.png");
+			background-size: 50%;
+		} */
+		html, body, html.touch body {
+			padding: 0px;
+			margin: 0px;
+			overflow: hidden;
+			font-family: "Lucida Console", Times, serif;
+			touch-action: none;
+		}
+		#canvas {
+			display: none;
+		}
+		@font-face {
+			font-family: 'FontAwesome';
+			src: url('AveriaSansLibre-Regular.ttf');
+		}
+		#gameArea {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+		}
+		#startScreen {
+			display: none;
+			width: 100%;
+			height: 100%;
+			background-image: url("img/bg.png");
+			background-size: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
+			font-family: 'FontAwesome';
+		}
+		#logo {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			left: 0px;
+		}
+		#playButton {
+			background-color: #96550546;
+			position: absolute;
+			left: calc(50% - 50% / 2);
+			top: calc(50% - 0% / 2);
+			width: 50%;
+			height: 12.5%;
+			border: 1px solid black;
+			border-radius: 10%;
+			text-align: center;
+		}
+
+		#lostScreen {
+			display: none;
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
+			background-color: rgba(31, 31, 31, 0.6);
+		}
+		#lostBaner {
+			background-image: url("img/bg.png");
+			position: absolute;
+			left: calc(50% - 80% / 2);
+			top: calc(50% - 10% / 2);
+			width: 80%;
+			height: 10%;
+			line-height: 100%;
+			text-align: center;
+			border: 1px solid black;
+		}
+		#lostScore{
+			background-image: url("img/bg.png");
+			font-family: 'FontAwesome';
+			position: absolute;
+			top: 20%;
+			left: 15%;
+			width: 70%;
+			height: 25%;
+			line-height: 280%;
+			font-size: 9vh;
+			text-align: center;
+			border: 1px solid black;
+		}
+		#back{
+			background-image: url("img/bg.png");
+			position: absolute;
+			bottom: 40%;
+			left: 10%;
+			width: 35%;
+			height: 10%;
+			line-height: 100%;
+			text-align: center;
+			border: 1px solid black;
+		}
+		#playAgain{
+			background-image: url("img/bg.png");
+			position: absolute;
+			bottom: 40%;
+			right: 10%;
+			width: 35%;
+			height: 10%;
+			line-height: 100%;
+			text-align: center;
+			border: 1px solid black;
+		}
+	</style>
+</head>
+
+<body bgcolor="#1F1F1F">
+	<div id="gameArea">
+		<canvas id="canvas"></canvas>
+
+		<div id="startScreen">
+			<div id="logo"><img style="width: 100%" src="img/logo.png"></div>
+			<div id="playButton">
+				<img style="width: 100%; height: 100%; position: absolute; left: 0px; top: 0px;" src="img/start.png">
+				<!-- Start -->
+			</div>
+		</div>
+
+		<div id="lostScreen">
+				<div id="lostScore"></div>
+				<div id="back"><img style="width: 100%; height: 100%" src="img/back.png"></div>
+				<div id="playAgain"><img style="width: 100%; height: 100%" src="img/again.png"></div>
+				</div>
+		</div>
+
+	</div>
+
+	<script type="text/javascript">
+
+		//$("#canvas").toggle();
+
+		$("#startScreen").toggle();
+		
+		//$("#lostScreen").toggle();
+
+		$('#back').click(function(){
+			$("#lostScreen").fadeOut('slow');
+			$("#startScreen").fadeIn('slow');
+		});
+
+		$('#playAgain').click(function(){
+			$("#startScreen").fadeOut('slow');
+			$("#lostScreen").fadeOut('slow');
+			$("#canvas").fadeIn('slow');
+			resetGame();
+			saveCurrentState();
+		});
+
+		$('#playButton').click(function(){
+			$("#startScreen").fadeOut('slow');
+			$("#canvas").fadeIn('slow');
+			setTimeout(checkIfGameLost, 700);
+		});
+
+		// https://logomakr.com/1627k7 LOGO
+
+		function showInterstitial() {
+			if (! AdMob ) { alert( 'admob plugin not ready | showInterstitial' ); return; }
+			AdMob.showInterstitial();
+		}
+
+	</script>
+		
+	<!-- <script type="text/javascript" src="js/index.js"></script> -->
+	<script type="text/javascript" src="admob_simple.js"></script>
+
+</body>
+
 </html>

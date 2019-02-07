@@ -1,8 +1,8 @@
 {
   "_from": "cordova-plugin-admobpro",
-  "_id": "cordova-plugin-admobpro@2.31.6",
+  "_id": "cordova-plugin-admobpro@2.37.2",
   "_inBundle": false,
-  "_integrity": "sha1-vtL8yS4M9TUXRCAD30cHNVzGEuA=",
+  "_integrity": "sha512-/sshroXqqU2wvgMjzBBiW9iGb0WVsN/SVh2gzU8DeEsLl72ZUM0qHrnJEst/1KiMin3A7kU7byti7jwL9Wkcxw==",
   "_location": "/cordova-plugin-admobpro",
   "_phantomChildren": {},
   "_requested": {
@@ -19,10 +19,10 @@
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/cordova-plugin-admobpro/-/cordova-plugin-admobpro-2.31.6.tgz",
-  "_shasum": "bed2fcc92e0cf53517442003df4707355cc612e0",
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-admobpro/-/cordova-plugin-admobpro-2.37.2.tgz",
+  "_shasum": "e4860c5fcc1fe761adaf5dde29b27afd63699f41",
   "_spec": "cordova-plugin-admobpro",
-  "_where": "C:\\Users\\Oskar\\Desktop\\balldrop\\WoodPuzzle",
+  "_where": "C:\\Users\\Oskar\\Desktop\\WoodPuzzle",
   "author": {
     "name": "Liming Xie"
   },
@@ -94,5 +94,5 @@
     "type": "git",
     "url": "git+https://github.com/floatinghotpot/cordova-admob-pro.git"
   },
-  "version": "2.31.6"
+  "version": "2.37.2"
 }
