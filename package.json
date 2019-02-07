@@ -2,12 +2,12 @@
     "name": "com.quaint.woodpuzzle",
     "displayName": "Wood Puzzle",
     "version": "1.0.0",
-    "description": "A sample Apache Cordova application that responds to the deviceready event.",
+    "description": "Simple Wood Puzzle",
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "author": "Apache Cordova Team",
+    "author": "Quaint",
     "license": "Apache-2.0",
     "dependencies": {
         "cordova-android": "^7.1.4",
