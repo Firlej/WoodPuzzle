@@ -176,8 +176,11 @@
 		// https://logomakr.com/1627k7 LOGO
 
 		function showInterstitial() {
-			if (! AdMob ) { alert( 'admob plugin not ready | showInterstitial' ); return; }
-			AdMob.showInterstitial();
+			if (typeof AdMob !== 'undefined' && AdMob) {
+				AdMob.showInterstitial();
+			} else {
+				alert( 'admob plugin not ready | showInterstitial' );
+			}
 		}
 
 	</script>
