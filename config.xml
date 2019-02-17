@@ -29,4 +29,5 @@
     <plugin name="cordova-plugin-admobpro" spec="^2.37.2">
         <variable name="PLAY_SERVICES_VERSION" value="16.0.0" />
     </plugin>
+    <engine name="android" spec="~7.1.4" />
 </widget>

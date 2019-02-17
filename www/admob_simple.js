@@ -28,7 +28,7 @@ function prepareInterstitial() {
     }
     AdMob.prepareInterstitial({
         adId: admobid.interstitial,
-        isTesting: false, // TODO: remove this line when release
+        isTesting: false,
         autoShow: false
     }, function () { // success
         // alert("Succesfully loaded interstitial.");
@@ -48,7 +48,7 @@ function showInterstitial() {
         } else {
             AdMob.prepareInterstitial({
                 adId: admobid.interstitial,
-                isTesting: false, // TODO: remove this line when release
+                isTesting: false,
                 autoShow: true
             }, function () { // success
                 // alert("Succesfully loaded interstitial.");
@@ -67,7 +67,7 @@ function prepareRewardVideoAd() {
     }
     AdMob.prepareRewardVideoAd({
         adId: admobid.rewardvideo,
-        isTesting: false, // TODO: remove this line when release
+        isTesting: false,
         autoShow: true,
     }, function () { // success
         // alert("Succesfully loaded rewarded.");
@@ -95,7 +95,7 @@ function initApp() {
     AdMob.createBanner({
         adId: admobid.banner,
         position: AdMob.AD_POSITION.BOTTOM_CENTER,
-        isTesting: false, // TODO: remove this line when release
+        isTesting: false,
         autoShow: true,
         overlap: true,
     }, function () { // success

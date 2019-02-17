@@ -1,13 +1,16 @@
 # EXCLUDE
 
-/res/*
+/res
+/node_modules
+/platforms
+/plugins
 
 # INCLUDE
 
-/www/*
-config.xml
-icon.png
-package.json
-package-lock.json
-README.md
-.npmignore
+# !/www/*
+# !config.xml
+# !icon.png
+# !package.json
+# !package-lock.json
+# !README.md
+# !.npmignore
