@@ -1,0 +1,26 @@
+{
+    "name": "com.quaint.woodpuzzle",
+    "displayName": "Wood Puzzle",
+    "version": "1.4.3",
+    "description": "Simple Wood Puzzle",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Quaint",
+    "license": "Apache-2.0",
+    "dependencies": {
+        "cordova-plugin-admobpro": "^2.37.2",
+        "cordova-plugin-extension": "^1.5.4",
+        "cordova-plugin-whitelist": "^1.3.3"
+    },
+    "cordova": {
+        "plugins": {
+            "cordova-plugin-whitelist": {},
+            "cordova-plugin-admobpro": {
+                "PLAY_SERVICES_VERSION": "16.0.0"
+            }
+        },
+        "platforms": []
+    }
+}

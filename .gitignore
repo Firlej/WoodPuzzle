@@ -1,0 +1,13 @@
+# EXCLUDE
+
+/res/*
+
+# INCLUDE
+
+/www/*
+config.xml
+icon.png
+package.json
+package-lock.json
+README.md
+.npmignore
