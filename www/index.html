@@ -148,7 +148,9 @@
 </head>
 
 <body>
+
 	<div id="gameArea">
+
 		<canvas id="canvas"></canvas>
 
 		<div id="startScreen">
@@ -173,16 +175,31 @@
 	</div>
 
 	<script type="text/javascript" src="admob_simple.js"></script>
+
 	<script type="text/javascript" src="figures.js"></script>
+
+	<script type="text/javascript" src="Option.js"></script>
+	<script type="text/javascript" src="Board.js"></script>
+
+	<script type="text/javascript" src="variables.js"></script>
+
 	<script type="text/javascript" src="sketch.js"></script>
-	<script type="text/javascript" src="bot.js"></script>
+
+	<!-- <script type="text/javascript" src="bot.js"></script> -->
 
 	<script type="text/javascript">
+
 		// $("#canvas").toggle();
 
 		$("#startScreen").toggle();
 
 		// $("#lostScreen").toggle();
+
+		// setTimeout(function () {
+		// 	$('#playButton').trigger("click");
+		// }, 1);
+
+
 
 		$('#back').click(function () {
 			$("#lostScreen").fadeOut('slow');

@@ -87,7 +87,7 @@ function showRewardVideoAd() {
 
 function initApp() {
     if (typeof AdMob == 'undefined' || !AdMob) {
-        alert('AdMob plugin not ready | initApp');
+        console.log('AdMob plugin not ready | initApp');
         return;
     }
 
@@ -105,7 +105,7 @@ function initApp() {
     });
 
     prepareInterstitial();
-    prepareRewardVideoAd();
+    // prepareRewardVideoAd();
 }
 
 

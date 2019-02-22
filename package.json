@@ -1,7 +1,7 @@
 {
     "name": "com.quaint.woodpuzzle",
     "displayName": "Wood Puzzle",
-    "version": "1.4.3",
+    "version": "1.5.0",
     "description": "Simple Wood Puzzle",
     "main": "index.js",
     "scripts": {
