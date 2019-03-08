@@ -39,7 +39,6 @@ class Board {
     }
 
     lost(options) {
-        //todo check
         for (let i = 0; i < options.length; i++) {
             if (!options[i].isNull()) {
                 if (this.optionFitsOnGrid(options[i])) {
@@ -50,10 +49,10 @@ class Board {
         return true;
     }
 
-    optionFitsOnGrid(option) {
+    optionFitsOnGrid(option, reserved_ok = false) {
         for (let y = -4; y < GRID_SIZE; y++) {
             for (let x = -4; x < GRID_SIZE; x++) {
-                if (this.optionFitsInPos(option, x, y)) {
+                if (this.optionFitsInPos(option, x, y, reserved_ok)) {
                     return true;
                 }
             }
@@ -61,16 +60,17 @@ class Board {
         return false;
     }
 
-    optionFitsInPos(option, posx, posy) {
+    optionFitsInPos(option, posx, posy, reserved_ok = false) {
         if (!option.isNull()) {
-            //todo check
             for (let y = 0; y < FIGURE_SIZE; y++) {
                 for (let x = 0; x < FIGURE_SIZE; x++) {
                     if (option.grid[y][x] == TAKEN) {
-                        if (this.grid[posy + y] === undefined ||
-                            this.grid[posy + y][posx + x] === undefined ||
-                            this.grid[posy + y][posx + x] != EMPTY) {
+                        if (this.grid[posy + y] === undefined || this.grid[posy + y][posx + x] === undefined) {
                             return false;
+                        } else if (this.grid[posy + y][posx + x] != EMPTY) {
+                            if (this.grid[posy + y][posx + x] != RESERVED || !reserved_ok) {
+                                return false;
+                            }
                         }
                     }
                 }
@@ -101,8 +101,6 @@ class Board {
         }
         return true;
     }
-
-    // check for rows/cols to remove
     check() {
         let colsToRemove = [];
         let rowsToRemove = [];
@@ -146,16 +144,60 @@ class Board {
             }
         }
 
-        return (colsToRemove.length + rowsToRemove.length);
+        return {
+            cols: colsToRemove,
+            rows: rowsToRemove,
+            count: (colsToRemove.length + rowsToRemove.length)
+        };
+    }
+
+    setCols(cols, value = TILE_LIFE) {
+        for (let i = 0; i < cols.length; i++) {
+            let x = cols[i];
+            for (let y = 0; y < GRID_SIZE; y++) {
+                this.grid[y][x] = value;
+            }
+        }
+    }
+
+    setRows(rows, value = TILE_LIFE) {
+        for (let i = 0; i < rows.length; i++) {
+            let y = rows[i];
+            for (let x = 0; x < GRID_SIZE; x++) {
+                this.grid[y][x] = value;
+            }
+        }
     }
 
     draw() {
         let drawY = this.y;
+        fill(rgba(1, 1, 1, 0.3));
         for (let y = 0; y < GRID_SIZE; y++) {
             let drawX = this.x;
             for (let x = 0; x < GRID_SIZE; x++) {
                 if (this.grid[y][x] == TAKEN) {
                     image(images.tile, drawX, drawY, this.tileSize, this.tileSize);
+                } else if (this.grid[y][x] == RESERVED) {
+                    rect(drawX, drawY, this.tileSize, this.tileSize);
+                }
+                drawX += this.tileSize;
+            }
+            drawY += this.tileSize;
+        }
+    }
+
+    drawDead() {
+        let drawY = this.y;
+        for (let y = 0; y < GRID_SIZE; y++) {
+            let drawX = this.x;
+            for (let x = 0; x < GRID_SIZE; x++) {
+                if (this.grid[y][x] > 0) {
+                    let ratio = (this.grid[y][x] / TILE_LIFE) * (this.grid[y][x] / TILE_LIFE);
+                    let offset = this.tileSize * (1 - ratio);
+                    globalAlpha(ratio);
+                    image(images.tile, drawX + offset / 2, drawY + offset / 2, this.tileSize * ratio, this.tileSize * ratio);
+                    this.grid[y][x]--;
+                    globalAlpha(1);
                 }
                 drawX += this.tileSize;
             }
@@ -177,11 +219,11 @@ class Board {
             vertex(baseX + baseSize, baseY + baseSize);
             vertex(baseX, baseY + baseSize);
             endShape();
-
             baseX++;
             baseY++;
             baseSize -= 2;
         }
         image(images.gridBG, this.x, this.y, this.w, this.h);
+        image(images.grid, this.x, this.y, this.w, this.h);
     }
 }

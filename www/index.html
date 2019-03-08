@@ -29,7 +29,7 @@
 		}
 
 		body {
-			background-image: url("img/bg.png");
+			background-image: url("img/bgyes.jpg");
 			background-size: 100%;
 		}
 
@@ -44,7 +44,7 @@
 		}
 
 		.button {
-			background-image: url("img/ba.png");
+			background-image: url("img/ba.jpg");
 			background-size: cover;
 			/* border: 0px solid rgba(29, 29, 29, 0.856);
 			border-radius: 0%; */
@@ -151,7 +151,7 @@
 
 	<div id="gameArea">
 
-		<canvas id="canvas"></canvas>
+		<canvas id="canvas" width="0" height="0"></canvas>
 
 		<div id="startScreen">
 			<div id="logo"><img style="width: 100%" src="img/logo.png"></div>
@@ -188,18 +188,16 @@
 	<!-- <script type="text/javascript" src="bot.js"></script> -->
 
 	<script type="text/javascript">
-
 		// $("#canvas").toggle();
 
-		$("#startScreen").toggle();
+		// $("#startScreen").toggle();
+		$("#startScreen").fadeIn('slow');
 
 		// $("#lostScreen").toggle();
 
 		// setTimeout(function () {
 		// 	$('#playButton').trigger("click");
 		// }, 1);
-
-
 
 		$('#back').click(function () {
 			$("#lostScreen").fadeOut('slow');
@@ -224,7 +222,6 @@
 		$('#playRewarded').click(function () {
 			prepareRewardVideoAd();
 		});
-
 	</script>
 
 </body>

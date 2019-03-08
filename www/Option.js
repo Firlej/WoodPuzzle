@@ -7,6 +7,13 @@ class Option {
 
         this.callback = null;
 
+        this.border = {
+            x: 0,
+            y: 0,
+            size: 0,
+            thickness: 0
+        }
+
         this.constX = 0;
         this.constY = 0;
         this.staticX = 0;
@@ -29,7 +36,7 @@ class Option {
             xpx: 0, //offset in pixels
             ypx: 0,
             constX: 0, //-FIGURE_SIZE/2,
-            constY: -5.5, // -FIGURE_SIZE/2,
+            constY: -4.5, // -FIGURE_SIZE/2,
         }
 
         this.tileCount = 0;
@@ -63,9 +70,15 @@ class Option {
         this.calcTileCount();
     }
 
-    init(constX, constY) {
-        this.constX = constX;
-        this.constY = constY;
+    init(_x, _y, _size, _thickness) {
+        this.border = {
+            x: _x,
+            y: _y,
+            size: _size,
+            thickness: _thickness
+        }
+        this.constX = this.border.x + this.border.thickness;
+        this.constY = this.border.y + this.border.thickness;
 
         this.staticX = this.constX;
         this.staticY = this.constY;
@@ -88,19 +101,11 @@ class Option {
     }
 
     pick() {
-        // this.picked = true;
         this.setState(PICKED);
 
-        this.x = this.staticX; // + FIGURE_SIZE / 2 * (tileSizeSmall - tileSize);
-        this.y = this.staticY; // + FIGURE_SIZE / 2 * (tileSizeSmall - tileSize);
+        this.x = this.staticX;
+        this.y = this.staticY;
         this.size = tileSizeSmall;
-    }
-
-    release() {
-        // if (this.is(PICKED)) {
-        //     this.state = 
-        // }
-        // this.picked = false;
     }
 
     placeOnBoard(board, x, y, callback) {
@@ -114,22 +119,10 @@ class Option {
         this.callback = callback;
     }
 
-    // update() {
-
-    // }
-
-    // lerp(x, y, size) {
-    //     this.x = lerp(this.x, x, LERP.POS);
-    //     this.y = lerp(this.y, y, LERP.POS);
-    //     this.size = lerp(this.size, size, LERP.SIZE);
-    // }
-
     draw() {
-        // if (!mainBoard.optionFitsOnGrid(this) && !this.is(PLACED)) {
-        //     // todo fil while option is PLACED and took the only place for another available option
-        //     // that other available option doesnt fit coz the place on grid is RESERVED
-        //     globalAlpha(0.7);
-        // }
+        if (!mainBoard.optionFitsOnGrid(this, true) && !this.is(PLACED)) {
+            globalAlpha(0.4);
+        }
 
         if (this.is(PICKED)) {
 
@@ -150,10 +143,8 @@ class Option {
                 this.callback()
             }
 
-        } else if (this.is(RETURNING)){
-
+        } else if (this.is(RETURNING)) {
             if (abs(this.staticX - this.x) > LERP.DIST || abs(this.staticY - this.y) > LERP.DIST || abs(this.size - tileSizeSmall) > LERP.DIST) {
-                // this.lerp(this.staticX, this.)
                 this.x = lerp(this.x, this.staticX, LERP.POS);
                 this.y = lerp(this.y, this.staticY, LERP.POS);
                 this.size = lerp(this.size, tileSizeSmall, LERP.SIZE);
@@ -162,9 +153,7 @@ class Option {
                 this.drawPicked();
                 this.setState(STATIC);
             }
-
         } else if (this.is(STATIC)) {
-
             this.drawStationary();
         }
         globalAlpha(1);
@@ -208,7 +197,7 @@ class Option {
 
                 let xindex = floor((mouseX - board.x) / tileSize + this.offset.x) - 2;
                 let yindex = floor((mouseY - board.y) / tileSize + this.offset.y) - 2;
-    
+
                 fill(rgba(1, 1, 1, 0.3));
                 if (mainBoard.optionFitsInPos(this, xindex, yindex)) {
                     let drawy = mainBoard.y + yindex * tileSize;
@@ -223,45 +212,33 @@ class Option {
                         drawy += tileSize;
                     }
                 }
-            } else if (this.is(PLACED)) {
-                fill(rgba(1, 1, 1, 0.3));
-                let drawy = this.board.ypx;
-                for (let y = 0; y < FIGURE_SIZE; y++) {
-                    let drawx = this.board.xpx;
-                    for (let x = 0; x < FIGURE_SIZE; x++) {
-                        if (this.grid[y][x] == TAKEN) {
-                            rect(drawx, drawy, tileSize, tileSize);
-                        }
-                        drawx += tileSize;
-                    }
-                    drawy += tileSize;
-                }
             }
         }
-        
+
     }
 
 
     drawBackground() {
-        var c = 0;
-        let num = 0.1;
-        // var drawY = this.staticY;
-        var drawY = this.constY;
-        for (var y = 0; y < FIGURE_SIZE; y++) {
-            // var drawX = this.staticX;
-            var drawX = this.constX;
-            for (var x = 0; x < FIGURE_SIZE; x++) {
-                if (c % 2) {
-                    fill(rgba(211, 209, 173, 0.9));
-                } else {
-                    fill(rgba(191, 189, 153, 0.9));
-                }
-                rect(drawX + tileSizeSmall * num, drawY + tileSizeSmall * num, tileSizeSmall * (1 - num * 2), tileSizeSmall * (1 - num * 2));
-                c++;
-                drawX += tileSizeSmall;
-            }
-            drawY += tileSizeSmall;
+
+        let c = 39 / OBW;
+        let baseX = this.border.x;
+        let baseY = this.border.y;
+        let baseSize = this.border.size;
+
+        for (let i = 0; i <= this.border.thickness + 1; i++) {
+            stroke(hsl(32, 19, 39 - i * c));
+            beginShape();
+            vertex(baseX, baseY);
+            vertex(baseX + baseSize, baseY);
+            vertex(baseX + baseSize, baseY + baseSize);
+            vertex(baseX, baseY + baseSize);
+            endShape();
+
+            baseX++;
+            baseY++;
+            baseSize -= 2;
         }
+        image(images.gridBG, this.constX, this.constY, tileSizeSmall * FIGURE_SIZE, tileSizeSmall * FIGURE_SIZE);
     }
 
     calcOffset() {
@@ -289,7 +266,7 @@ class Option {
             };
         }
 
-        
+
     }
 
     calcTileCount() {

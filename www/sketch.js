@@ -1,9 +1,14 @@
 sources = {
-	gridBG: 'img/gridbg.png',
-	tile: 'img/tile.png',
-	bg: 'img/bg.png',
-	pointsBg: 'img/baner.png',
+	grid: 'img/grid.png',
+	gridBG: 'img/gridbg.jpg',
+	tile: 'img/tile.jpg',
+	pointsBg: 'img/baner.jpg',
 	crown: 'img/crown.png',
+}
+
+function imagesLoaded() {
+	// $("#cover").hide();
+	// $("#startScreen").fadeIn('fast');
 }
 
 function setup(callback) {
@@ -22,13 +27,10 @@ function setup(callback) {
 }
 
 function draw() {
-	// if (!imagesLoaded) {
-	// 	redrawOnce = true;
-	// }
 
-	// if (gameIsStatic() && frameCount > 6000) {
-	// 	return;
-	// }
+	if (gameIsStatic() && frameCount > 6000) {
+		return;
+	}
 
 	drawBackground();
 
@@ -37,6 +39,8 @@ function draw() {
 
 	mainBoard.drawBackground();
 	mainBoard.draw();
+
+	deadBoard.drawDead();
 
 	drawOptions();
 }
@@ -54,10 +58,8 @@ function gameIsStatic() {
 		!options[1].is(STATIC) ||
 		!options[2].is(STATIC)
 	) {
-		// console.log(false);
 		return false;
 	} else {
-		// console.log(true);
 		return true;
 	}
 }
@@ -133,7 +135,6 @@ function getAllLocalStorage() {
 		options[1].setGrid(tempGrids[1]);
 		options[2].setGrid(tempGrids[2]);
 	} else {
-		// todo why options have wrong offset when they are loaded from localstorage and localstorage is empty
 		options[0].setGrid(null);
 		options[1].setGrid(null);
 		options[2].setGrid(null);
@@ -188,10 +189,10 @@ function mousePressed() {
 		for (let i = 0; i < options.length; i++) {
 			let option = options[i];
 			if (option.isAvailable() && mouseContained(
-					option.constX,
-					option.constY,
-					option.constX + FIGURE_SIZE * tileSizeSmall,
-					option.constY + FIGURE_SIZE * tileSizeSmall
+					option.border.x,
+					option.border.y,
+					option.border.x + option.border.size,
+					option.border.y + option.border.size
 				)) {
 				option.pick();
 				pickedOption = option;
@@ -213,7 +214,10 @@ function mouseReleased() {
 			pickedOption.placeOnBoard(mainBoard, x, y, function () {
 				mainBoard.placeOption(this, this.board.x, this.board.y);
 				addScore(this.tileCount);
-				addScore(mainBoard.check() * GRID_SIZE);
+				let result = mainBoard.check();
+				deadBoard.setCols(result.cols, TILE_LIFE);
+				deadBoard.setRows(result.rows, TILE_LIFE);
+				addScore(result.count * GRID_SIZE);
 				this.setGrid(null);
 				fillOptions();
 				saveToLocalStorage("grid", mainBoard.grid);
@@ -251,18 +255,38 @@ function fillOptions() {
 	}
 }
 
-function keyPressed(k) {
-	if (k == 32) {
-		options[0].setGrid(null);
-		options[1].setGrid(null);
-		options[2].setGrid(null);
-		fillOptions();
-	}
-}
+// function keyPressed(k) {
+// 	console.log(k);
+// 	if (k == 32) {
+// 		options[0].setGrid(null);
+// 		options[1].setGrid(null);
+// 		options[2].setGrid(null);
+// 		fillOptions();
+// 	} else if (k == 102) {
+// 		mainBoard.setGrid([
+// 			[0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+// 			[1, 0, 1, 1, 1, 1, 1, 1, 1, 0],
+// 			[1, 1, 0, 1, 1, 1, 1, 1, 1, 0],
+// 			[1, 1, 1, 0, 1, 1, 1, 1, 1, 0],
+// 			[1, 1, 1, 1, 0, 1, 1, 1, 1, 0],
+// 			[1, 1, 1, 1, 1, 0, 1, 1, 1, 0],
+// 			[1, 1, 1, 1, 1, 1, 0, 1, 1, 1],
+// 			[1, 1, 1, 1, 1, 1, 1, 0, 1, 1],
+// 			[1, 1, 1, 1, 1, 1, 1, 1, 0, 1],
+// 			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+// 		]);
+// 		options[0].setGrid(figures[0]);
+// 		options[1].setGrid(figures[0]);
+// 		options[2].setGrid(figures[0]);
+// 	}
+// 	redrawOnce = true;
+// }
 
 function drawOptions() {
 	for (let i = 0; i < options.length; i++) {
-		// options[i].drawBackground();
+		options[i].drawBackground();
+	}
+	for (let i = 0; i < options.length; i++) {
 		options[i].drawShadowOnBoard(mainBoard);
 		options[i].draw();
 	}
@@ -293,10 +317,6 @@ function drawBannerHighscore() {
 }
 
 function drawBackground() {
-	fill(rgba(100, 100, 100));
-	rect(0, 0, width, height);
-
 	clearBackground();
-
-	// image(images.bg, 0, 0, width, height);
+	// rect(0, 0, width, height);
 }

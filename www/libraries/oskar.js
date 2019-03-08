@@ -8,12 +8,16 @@ let mouseX, mouseY;
 let keyCode;
 
 let images = [];
-let imagesLoaded = false;
 
 let PI = Math.PI;
 let frameCount = 0;
 
 window.onload = function () {
+    // canvas = document.createElement('canvas');
+    // canvas.id = "canvas";
+    // let gameArea = document.getElementById("gameArea");
+    // gameArea.insertBefore(canvas, gameArea.firstChild);
+
     canvas = document.getElementById('canvas');
     ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -50,6 +54,7 @@ function setLibValues() {
 }
 
 let sources = {};
+function imagesLoaded() {}
 
 function loadImages(sources) {
 
@@ -64,7 +69,7 @@ function loadImages(sources) {
             loadedImages++;
             if (loadedImages == numImages) {
                 //console.log("Images loaded!");
-                imagesLoaded = true;
+                imagesLoaded();
             }
         };
         images[src].src = sources[src];

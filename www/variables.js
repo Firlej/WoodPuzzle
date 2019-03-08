@@ -3,14 +3,15 @@ const FIGURE_SIZE = 5;
 
 let gap = 0;
 let gapSmall = 0;
+let OBW = 0; // option border width
 
 let tileSize = 0,
     tileSizeSmall = 0;
 
 const LERP = {
-    POS: 0.2,
-    SIZE: 0.2,
-    PLACE: 0.25,
+    POS: 0.3,
+    SIZE: 0.3,
+    PLACE: 0.3,
     DIST: 0.499999,
     SCORE: 0.069
 };
@@ -28,11 +29,14 @@ const EMPTY = 0,
     RESERVED = 2;
 
 let mainBoard = new Board();
+let deadBoard = new Board();
 let options = [
     new Option(),
     new Option(),
     new Option()
 ];
+
+const TILE_LIFE = 20;
 
 let gameLost = false;
 
@@ -46,12 +50,11 @@ let score = 0,
 
 function setValues() {
 
-    gap = width / 25;
-    gapSmall = gap/2;
+    gap = width / 30;
+    gapSmall = gap / 1.5;
+    OBW = gapSmall / 2; // option border width
 
-    tileSize = (width - gap - gap - gapSmall - gapSmall) / GRID_SIZE;
-    mainBoard.tileSize = tileSize;
-    tileSizeSmall = (width - gap - gap - gapSmall - gapSmall) / (FIGURE_SIZE * 3);
+    tileSizeSmall = (width - gap - gap - gapSmall - gapSmall - 6 * OBW) / (FIGURE_SIZE * 3);
 
     bannerScore = new function () {
         this.w = (width - gap - gap) / 2.2;
@@ -59,8 +62,8 @@ function setValues() {
         this.x = gap;
         this.y = gap;
         this.fontSize = floor(this.h * 0.95) + "px FontAwesome";
-        this.textX = floor(this.x + this.w / 2);
-        this.textY = floor(this.y + this.h * 0.83);
+        this.textX = this.x + this.w / 2;
+        this.textY = this.y + this.h * 0.83;
     }
 
     bannerHighscore = new function () {
@@ -78,17 +81,25 @@ function setValues() {
         x: gap,
         y: bannerScore.y + bannerScore.h + gap * 2,
         size: width - gap - gap,
-        thickness: gapSmall,
+        thickness: gapSmall / 2,
     };
 
-    mainBoard.x = mainBoard.border.x + gapSmall;
-    mainBoard.y = mainBoard.border.y + gapSmall;
+    tileSize = (width - gap - gap - mainBoard.border.thickness * 2) / GRID_SIZE;
+
+    mainBoard.tileSize = tileSize;
+
+    mainBoard.x = mainBoard.border.x + mainBoard.border.thickness;
+    mainBoard.y = mainBoard.border.y + mainBoard.border.thickness;
     mainBoard.w = tileSize * GRID_SIZE;
     mainBoard.h = mainBoard.w;
 
-    options[0].init(gap, mainBoard.border.y + mainBoard.border.size + 2 * gap);
-    options[1].init(options[0].constX + tileSizeSmall * FIGURE_SIZE + gapSmall, options[0].constY);
-    options[2].init(options[1].constX + tileSizeSmall * FIGURE_SIZE + gapSmall, options[1].constY);
+    deadBoard.x = mainBoard.x;
+    deadBoard.y = mainBoard.y;
+    deadBoard.tileSize = mainBoard.tileSize;
 
-	redrawOnce = true;
+    options[0].init(gap, mainBoard.border.y + mainBoard.border.size + gapSmall, tileSizeSmall * FIGURE_SIZE + OBW + OBW, OBW);
+    options[1].init(options[0].border.x + options[0].border.size + gapSmall, options[0].border.y, options[0].border.size, options[0].border.thickness);
+    options[2].init(options[1].border.x + options[1].border.size + gapSmall, options[1].border.y, options[1].border.size, options[1].border.thickness);
+
+    redrawOnce = true;
 }
