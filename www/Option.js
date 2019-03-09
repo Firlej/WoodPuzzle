@@ -14,6 +14,8 @@ class Option {
             thickness: 0
         }
 
+        this.alpha = 0;
+
         this.constX = 0;
         this.constY = 0;
         this.staticX = 0;
@@ -52,6 +54,8 @@ class Option {
         this.x = this.staticX;
         this.y = this.staticY;
         this.size = tileSizeSmall;
+
+        this.alpha = 0;
 
         this.placed = false;
         this.board = {
@@ -121,8 +125,11 @@ class Option {
 
     draw() {
         if (!mainBoard.optionFitsOnGrid(this, true) && !this.is(PLACED)) {
-            globalAlpha(0.4);
+            this.alpha = lerp(this.alpha, 0.5, LERP.ALPHA);
+        } else {
+            this.alpha = lerp(this.alpha, 1, LERP.ALPHA);
         }
+        globalAlpha(this.alpha);
 
         if (this.is(PICKED)) {
 
@@ -251,11 +258,8 @@ class Option {
             this.offset.y += offset.bottom;
             this.offset.x += (offset.right - offset.left) / 2;
 
-            this.staticX = this.constX;
-            this.staticY = this.constY;
-
-            this.staticX += (offset.right - offset.left) / 2 * tileSizeSmall;
-            this.staticY += (offset.bottom - offset.top) / 2 * tileSizeSmall;
+            this.staticX = this.constX + (offset.right - offset.left) / 2 * tileSizeSmall;
+            this.staticY = this.constY + (offset.bottom - offset.top) / 2 * tileSizeSmall;
 
             this.offset.xpx = (this.offset.x - 2.5) * tileSize;
             this.offset.ypx = (this.offset.y - 2.5) * tileSize;

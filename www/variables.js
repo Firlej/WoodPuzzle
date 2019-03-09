@@ -9,6 +9,7 @@ let tileSize = 0,
     tileSizeSmall = 0;
 
 const LERP = {
+    ALPHA: 0.15,
     POS: 0.3,
     SIZE: 0.3,
     PLACE: 0.3,

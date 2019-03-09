@@ -54,6 +54,7 @@ function setLibValues() {
 }
 
 let sources = {};
+
 function imagesLoaded() {}
 
 function loadImages(sources) {
@@ -144,8 +145,8 @@ function rgba(r, g, b, a = 1) {
     return "rgba(" + floor(r) + ", " + floor(g) + ", " + floor(b) + ", " + a + ")";
 }
 
-function hsl(h, s, l) {
-    return "hsl(" + floor(h) + ", " + floor(s) + "%, " + floor(l) + "%)";
+function hsl(h, s, l, a = 1) {
+    return "hsl(" + floor(h) + ", " + floor(s) + "%, " + floor(l) + "%, " + a + ")";
 }
 
 function lerp(start, end, rate) {
