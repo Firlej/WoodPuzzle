@@ -12,13 +12,15 @@
     "dependencies": {
         "cordova-android": "^7.1.4",
         "cordova-plugin-admobpro": "^2.37.2",
-        "cordova-plugin-extension": "^1.5.4"
+        "cordova-plugin-extension": "^1.5.4",
+        "cordova-plugin-market": "git+https://github.com/xmartlabs/cordova-plugin-market.git"
     },
     "cordova": {
         "plugins": {
             "cordova-plugin-admobpro": {
                 "PLAY_SERVICES_VERSION": "16.0.0"
-            }
+            },
+            "cordova-plugin-market": {}
         },
         "platforms": [
             "android"
