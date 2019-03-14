@@ -38,6 +38,7 @@ let options = [
 ];
 
 const TILE_LIFE = 20;
+const TILE_ALPHA = 0.5
 
 let gameLost = false;
 
@@ -49,6 +50,8 @@ let score = 0,
     scoreDisplay = 0,
     highscore = 0;
 
+let pause, bannerScore, bannerHighscore;
+
 function setValues() {
 
     gap = width / 30;
@@ -57,30 +60,36 @@ function setValues() {
 
     tileSizeSmall = (width - gap - gap - gapSmall - gapSmall - 6 * OBW) / (FIGURE_SIZE * 3);
 
-    bannerScore = new function () {
-        this.w = (width - gap - gap) / 2.2;
-        this.h = this.w * 160 / 512;
-        this.x = gap;
-        this.y = gap;
-        this.fontSize = floor(this.h * 0.95) + "px FontAwesome";
-        this.textX = this.x + this.w / 2;
-        this.textY = this.y + this.h * 0.83;
-    }
+    // pause = new function () {
+    //     this.w = (width - gap * 4) * 100 / 848;
+    //     this.h = this.w;
+    //     this.x = width - gap - this.w;
+    //     this.y = gap;
+    // }
 
-    bannerHighscore = new function () {
-        // todo this.x
-        this.x = bannerScore.x + bannerScore.w + (width - gap / 2 - 2 * bannerScore.w);
-        this.y = bannerScore.y;
-        this.w = bannerScore.w;
-        this.h = bannerScore.h;
-        this.fontSize = floor(this.h * 0.95) + "px FontAwesome";
-        this.textX = this.x + this.w / 2;
-        this.textY = this.y + this.h * 0.83;
-    }
+    // bannerScore = new function () {
+    //     this.h = pause.h;
+    //     this.w = pause.h * 374 / 100;
+    //     this.x = gap;
+    //     this.y = gap;
+    //     this.fontSize = floor(this.h * 0.95) + "px FontAwesome";
+    //     this.textX = this.x + this.w / 2;
+    //     this.textY = this.y + this.h * 0.83;
+    // }
+
+    // bannerHighscore = new function () {
+    //     this.x = bannerScore.x + bannerScore.w + gap;
+    //     this.y = bannerScore.y;
+    //     this.w = bannerScore.w;
+    //     this.h = bannerScore.h;
+    //     this.fontSize = floor(this.h * 0.95) + "px FontAwesome";
+    //     this.textX = this.x + this.w / 2;
+    //     this.textY = this.y + this.h * 0.83;
+    // }
 
     mainBoard.border = {
         x: gap,
-        y: bannerScore.y + bannerScore.h + gap * 2,
+        y: $('#scoreBar')[0].clientHeight + gap * 2.5,
         size: width - gap - gap,
         thickness: gapSmall / 2,
     };

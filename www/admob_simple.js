@@ -48,15 +48,7 @@ function showInterstitial() {
         if (isready) {
             AdMob.showInterstitial();
         } else {
-            AdMob.prepareInterstitial({
-                adId: admobid.interstitial,
-                isTesting: IS_TESTING,
-                autoShow: true
-            }, function () { // success
-                // alert("Succesfully loaded interstitial.");
-            }, function () { // fail
-                alert("Failed loading interstitial.");
-            });
+            prepareInterstitial();
         }
     });
 }

@@ -1,0 +1,118 @@
+/* LOADING SCREEN */
+
+#loadingScreen #logo {
+    margin-top: 50%;
+    margin-bottom: 50%;
+}
+
+/* START SCREEN */
+#play {
+    left: calc(50% - 40% / 2);
+    top: 40%;
+    width: 40%;
+    height: calc(9 / 16 * 40%);
+}
+
+#share {
+    left: calc(50%/3);
+    bottom: calc(9 / 16 * 25%);
+    width: 25%;
+    height: calc(9 / 16 * 25%);
+}
+
+#rateus {
+    background-image: url("img/star.png");
+    background-size: 100% 100%;
+    right: calc(50%/3);
+    bottom: calc(9 / 16 * 25%);
+    width: 25%;
+    height: calc(9 / 16 * 25%);
+}
+
+/* GAME SCREEN */
+#gameScreen #canvas {
+    background-color: transparent;
+}
+
+#gameScreen #scoreBar {
+    background-image: url("img/baner.png");
+    background-size: 100% 100%;
+    position: absolute;
+    top: calc(100%/30*9/16);
+    left: calc(100%/30);
+    width: calc(100%*26/30*100/848*373/100);
+    height: calc(100%*26/30*100/848*9/16);
+    text-align: center;
+}
+
+#gameScreen #highscoreBar {
+    background-image: url("img/baner.png");
+    background-size: 100% 100%;
+    position: absolute;
+    top: calc(100%/30*9/16);
+    left: calc(100%*26/30*100/848*373/100 + 100%/30*2);
+    width: calc(100%*26/30*100/848*373/100);
+    height: calc(100%*26/30*100/848*9/16);
+    text-align: center;
+}
+
+#gameScreen #pause {
+    background-image: url("img/pause.png");
+    background-size: 100% 100%;
+    width: calc(100%*26/30*100/848);
+    height: calc(100%*26/30*100/848*9/16);
+    top: calc(100%/30*9/16);
+    right: calc(100%/30);
+}
+
+/* PAUSE SCREEN */
+#pauseScreen .icon {
+    width: 25%;
+    height: calc(9 / 16 * 25%);
+}
+
+#pauseScreen #home {
+    left: calc(50%/3);
+    bottom: 50%;
+}
+
+#pauseScreen #restart {
+    right: calc(50%/3);
+    bottom: 50%;
+}
+
+#pauseScreen #mute {
+    left: calc(50%/3);
+    bottom: 35%;
+}
+
+#pauseScreen #resume {
+    right: calc(50%/3);
+    bottom: 35%;
+}
+
+/* LOST SCREEN */
+#lostScore {
+    background-image: url("img/baner.png");
+    background-size: 100% 100%;
+    position: absolute;
+    top: 30%;
+    left: 15%;
+    width: 70%;
+    height: calc(70%*9/16*130/374);
+    text-align: center;
+}
+
+#lostScreen #home {
+    left: calc(50%/3);
+    bottom: 35%;
+    width: 25%;
+    height: calc(9 / 16 * 25%);
+}
+
+#lostScreen #restart {
+    right: calc(50%/3);
+    bottom: 35%;
+    width: 25%;
+    height: calc(9 / 16 * 25%);
+}

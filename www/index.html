@@ -5,6 +5,7 @@
 	<meta charset="UTF-8">
 	<title>Wood Puzzle</title>
 	<meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no' />
+	<meta name="viewport" content="width=device-width, user-scalable=no">
 
 	<script type="text/javascript" src="cordova.js"></script>
 
@@ -12,164 +13,72 @@
 	<script type="text/javascript" src="libraries/oskar.js"></script>
 
 	<link rel="icon" href="../icon.png" type="image/x-icon" />
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="stylesheet" type="text/css" href="screens.css">
 
-	<style type="text/css">
-		/* body {
-			background-image: url("img/bg.png");
-			background-size: 50%;
-		} */
-		html,
-		body,
-		html.touch body {
-			padding: 0px;
-			margin: 0px;
-			overflow: hidden;
-			font-family: "Lucida Console", Times, serif;
-			touch-action: none;
-		}
-
-		body {
-			background-image: url("img/bgyes.jpg");
-			background-size: 100%;
-		}
-
-		#canvas {
-			display: none;
-		}
-
-		@font-face {
-			font-family: 'FontAwesome';
-			src: url('AveriaSansLibre-Regular.ttf');
-			/* src: url('SansPosterBold.ttf'); */
-		}
-
-		.button {
-			background-image: url("img/ba.jpg");
-			background-size: cover;
-			/* border: 0px solid rgba(29, 29, 29, 0.856);
-			border-radius: 0%; */
-		}
-
-		#gameArea {
-			position: absolute;
-			left: 50%;
-			top: 50%;
-		}
-
-		#startScreen {
-			display: none;
-			width: 100%;
-			height: 100%;
-			position: absolute;
-			top: 0;
-			left: 0;
-			font-family: 'FontAwesome';
-		}
-
-		#logo {
-			position: absolute;
-			width: 100%;
-			height: 100%;
-			left: 0px;
-		}
-
-		#playButton {
-			background-color: #96550546;
-			position: absolute;
-			left: calc(50% - 50% / 2);
-			top: calc(50% - 0% / 2);
-			width: 50%;
-			height: 12.5%;
-			text-align: center;
-		}
-
-		#playRewarded {
-			position: absolute;
-			left: calc(50% - 50% / 2);
-			bottom: 10%;
-			width: 50%;
-			height: 12.5%;
-			text-align: center;
-		}
-
-		#lostScreen {
-			display: none;
-			width: 100%;
-			height: 100%;
-			position: absolute;
-			top: 0;
-			left: 0;
-			/* background-color: rgba(31, 31, 31, 0.6); */
-		}
-
-		#darkBackground {
-			width: 100vw;
-			height: 100vh;
-			position: fixed;
-			top: 0;
-			left: 0;
-			background-color: rgba(31, 31, 31, 0.6);
-		}
-
-		#lostScore {
-			font-family: 'FontAwesome';
-			position: absolute;
-			top: 20%;
-			left: 15%;
-			width: 70%;
-			height: 25%;
-			text-align: center;
-		}
-
-		#lostScore span {
-			display: inline-block;
-			width: 100%;
-			text-align: center;
-			vertical-align: middle;
-			/* border: 5px solid green; */
-		}
-
-		#back {
-			position: absolute;
-			bottom: 40%;
-			left: 10%;
-			width: 35%;
-			height: 10%;
-		}
-
-		#playAgain {
-			position: absolute;
-			bottom: 40%;
-			right: 10%;
-			width: 35%;
-			height: 10%;
-		}
-	</style>
 </head>
 
 <body>
 
 	<div id="gameArea">
 
-		<canvas id="canvas" width="0" height="0"></canvas>
+		<div id="loadingScreen" class="screen">
+			<img id="logo" style="width: 100%" src="img/logo.png">
+		</div>
 
-		<div id="startScreen">
-			<div id="logo"><img style="width: 100%" src="img/logo.png"></div>
-			<div id="playButton" class="button">
-				<img style="width: 100%; height: 100%;" src="img/start.png">
-				<!-- Start -->
+		<div id="startScreen" class="screen">
+			<img style="width: 100%" src="img/logo.png">
+			<div id="play" class="icon">
+				<img src="img/play.png">
 			</div>
-			<div id="playRewarded" class="">
-				<!-- <img style="width: 100%; height: 100%;" src="img/start.png"> -->
-				<!-- Start -->
+			<div id="share" class="icon">
+				<img src="img/share.png">
+			</div>
+			<div id="rateus" class="icon">
+				<!-- <a href="https://play.google.com/store/apps/details?id=com.quaint.woodpuzzle" target="_blank">
+					<img src="img/rateus.png">
+				</a> -->
 			</div>
 		</div>
 
-		<div id="lostScreen">
+		<div id="gameScreen" class="screen">
+				<div id="pause" class="icon">
+					<!-- <img src="img/pause.png"> -->
+				</div>
+				<div id="scoreBar" class="">
+					<span>0</span>
+				</div>
+				<div id="highscoreBar" class="">
+					<span >0</span>
+				</div>
+			<canvas id="canvas" width="0" height="0"></canvas>
+		</div>
+
+		<div id="pauseScreen" class="screen">
 			<div id="darkBackground"></div>
-			<div id="lostScore" class="button"><span id="lostScoreSpan">0</span></div>
-			<div id="back" class="button"><img style="width: 100%; height: 100%" src="img/back.png"></div>
-			<div id="playAgain" class="button"><img style="width: 100%; height: 100%" src="img/again.png"></div>
+			<div id="home" class="icon">
+				<img src="img/home.png">
+			</div>
+			<div id="restart" class="icon">
+				<img src="img/restart.png">
+			</div>
+			<div id="mute" class="icon">
+				<img src="img/mute.png">
+			</div>
+			<div id="resume" class="icon">
+				<img src="img/resume.png">
+			</div>
+		</div>
+
+		<div id="lostScreen" class="screen">
+			<div id="darkBackground"></div>
+			<div id="lostScore" class="button"><span>0</span></div>
+			<div id="home" class="icon">
+				<img src="img/home.png">
+			</div>
+			<div id="restart" class="icon">
+				<img src="img/restart.png">
+			</div>
 		</div>
 
 	</div>
@@ -188,40 +97,79 @@
 	<!-- <script type="text/javascript" src="bot.js"></script> -->
 
 	<script type="text/javascript">
-		// $("#canvas").toggle();
 
-		// $("#startScreen").toggle();
-		$("#startScreen").fadeIn('slow');
-
-		// $("#lostScreen").toggle();
+		// $("#startScreen").fadeIn('fast');
+		// $("#loadingScreen").fadeIn('slow');
 
 		// setTimeout(function () {
-		// 	$('#playButton').trigger("click");
-		// }, 1);
+		// 	$('#play').trigger("click");
+		// }, 10);
 
-		$('#back').click(function () {
-			$("#lostScreen").fadeOut('slow');
-			$("#canvas").fadeOut('fast');
+		// START SCREEN
+		$('#play').click(function () {
+			$("#startScreen").fadeOut('slow');
+
+			$("#gameScreen").fadeIn('slow', function () {
+				checkIfGameLost();
+			});
+			windowResized();
+		});
+		
+		$('#rateus').click(function () {
+			// window.location.replace('market://details?id=com.quaint.woodpuzzle');
+		});
+
+		// GAME SCREEN
+		$('#pause').click(function () {
+			checkIfGameLost();
+			if (!gameLost) {
+				$("#pauseScreen").fadeIn('slow');
+			}
+		});
+
+		// PAUSE SCREEN
+		$('#pauseScreen #home').click(function () {
+			$("#pauseScreen").fadeOut('slow');
+			$("#gameScreen").fadeOut('slow');
 			$("#startScreen").fadeIn('slow');
 		});
+		$('#pauseScreen #restart').click(function () {
+			$("#loadingScreen").fadeIn(0);
+			$("#pauseScreen").fadeOut('slow');
+			$("#gameScreen").fadeOut('slow', function () {
+				resetGame();
+				saveCurrentState();
+				$("#gameScreen").fadeIn('slow', function () {
+					$("#loadingScreen").fadeOut(0);
+				});
+			});
+		});
+		$('#pauseScreen #resume').click(function () {
+			$("#pauseScreen").fadeOut('slow');
+		});
 
-		$('#playAgain').click(function () {
-			$("#startScreen").fadeOut('slow');
+		// LOST SCREEN
+		$('#lostScreen #home').click(function () {
+			$("#gameScreen").fadeOut('slow');
 			$("#lostScreen").fadeOut('slow');
-			$("#canvas").fadeIn('slow');
-			resetGame();
-			saveCurrentState();
+
+			$("#startScreen").fadeIn('slow');
+		});
+		$('#lostScreen #restart').click(function () {
+			$("#loadingScreen").fadeIn(0);
+			$("#lostScreen").fadeOut('slow');
+			$("#gameScreen").fadeOut('slow', function () {
+				resetGame();
+				saveCurrentState();
+				$("#gameScreen").fadeIn('slow', function () {
+					$("#loadingScreen").fadeOut(0);
+				});
+			});
 		});
 
-		$('#playButton').click(function () {
-			$("#startScreen").fadeOut('slow');
-			$("#canvas").fadeIn('slow');
-			setTimeout(checkIfGameLost, 700);
-		});
-
-		$('#playRewarded').click(function () {
-			prepareRewardVideoAd();
-		});
+		// $('#playRewarded').click(function () {
+		// 	prepareRewardVideoAd();
+		// });
 	</script>
 
 </body>

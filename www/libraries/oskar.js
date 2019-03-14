@@ -252,6 +252,7 @@ function addEventListeners() {
     window.addEventListener('touchstart', function (evt) {
         updateTouchMove(evt)
         mousePressed();
+        evt.preventDefault();
     });
     window.addEventListener('touchend', mouseReleased);
     window.addEventListener('touchmove', function (evt) {

@@ -86,6 +86,8 @@ class Option {
 
         this.staticX = this.constX;
         this.staticY = this.constY;
+
+        this.calcOffset();
     }
 
     is(state) {
@@ -106,10 +108,15 @@ class Option {
 
     pick() {
         this.setState(PICKED);
+        this.calcOffset();
 
         this.x = this.staticX;
         this.y = this.staticY;
         this.size = tileSizeSmall;
+    }
+
+    isDrawn() {
+        return this.is(STATIC) && (this.alpha == TILE_ALPHA || this.alpha == 1);
     }
 
     placeOnBoard(board, x, y, callback) {
@@ -125,9 +132,17 @@ class Option {
 
     draw() {
         if (!mainBoard.optionFitsOnGrid(this, true) && !this.is(PLACED)) {
-            this.alpha = lerp(this.alpha, 0.5, LERP.ALPHA);
+            if (abs(TILE_ALPHA - this.alpha) > LERP.DIST) {
+                this.alpha = lerp(this.alpha, TILE_ALPHA, LERP.ALPHA);
+            } else {
+                this.alpha = TILE_ALPHA;
+            }
         } else {
-            this.alpha = lerp(this.alpha, 1, LERP.ALPHA);
+            if (abs(1 - this.alpha) > LERP.DIST) {
+                this.alpha = lerp(this.alpha, 1, LERP.ALPHA);
+            } else {
+                this.alpha = 1;
+            }
         }
         globalAlpha(this.alpha);
 
@@ -224,16 +239,15 @@ class Option {
 
     }
 
-
     drawBackground() {
 
-        let c = 39 / OBW;
+        let c = 35 / OBW;
         let baseX = this.border.x;
         let baseY = this.border.y;
         let baseSize = this.border.size;
 
         for (let i = 0; i <= this.border.thickness + 1; i++) {
-            stroke(hsl(32, 19, 39 - i * c));
+            stroke(hsl(160, 0, 35 - i * c));
             beginShape();
             vertex(baseX, baseY);
             vertex(baseX + baseSize, baseY);

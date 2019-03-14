@@ -207,12 +207,12 @@ class Board {
 
     drawBackground() {
         //todo optimise
-        let c = 39 / floor(this.border.thickness);
+        let c = 35 / floor(this.border.thickness);
         let baseX = this.border.x;
         let baseY = this.border.y;
         let baseSize = this.border.size;
         for (let i = 0; i <= this.border.thickness + 1; i++) {
-            stroke(hsl(32, 19, 39 - i * c));
+            stroke(hsl(160, 0, 35 - i * c));
             beginShape();
             vertex(baseX, baseY);
             vertex(baseX + baseSize, baseY);

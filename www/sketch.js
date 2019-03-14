@@ -2,13 +2,12 @@ sources = {
 	grid: 'img/grid.png',
 	gridBG: 'img/gridbg.jpg',
 	tile: 'img/tile.jpg',
-	pointsBg: 'img/baner.jpg',
-	crown: 'img/crown.png',
+	// pointsBg: 'img/baner.png',
+	// crown: 'img/crown.png',
 }
 
 function imagesLoaded() {
-	// $("#cover").hide();
-	// $("#startScreen").fadeIn('fast');
+	$("#startScreen").fadeIn('slow');
 }
 
 function setup(callback) {
@@ -34,8 +33,9 @@ function draw() {
 
 	drawBackground();
 
-	drawBannerScore();
-	drawBannerHighscore();
+	calcScore();
+	// drawBannerScore();
+	// drawBannerHighscore();
 
 	mainBoard.drawBackground();
 	mainBoard.draw();
@@ -50,13 +50,12 @@ function gameIsStatic() {
 		redrawOnce = false;
 		return false;
 	}
-
 	if (
 		scoreDisplay != score ||
 		pickedOption != null ||
-		!options[0].is(STATIC) ||
-		!options[1].is(STATIC) ||
-		!options[2].is(STATIC)
+		!options[0].isDrawn() ||
+		!options[1].isDrawn() ||
+		!options[2].isDrawn()
 	) {
 		return false;
 	} else {
@@ -73,8 +72,12 @@ function windowResized() {
 	let newHeight = windowHeight;
 	let newWidthToHeight = newWidth / newHeight;
 
-	let fontSize = 12;
-	let lostScoreSpanHeight = 24.3;
+	let lostFontSize = 12;
+	let lostScoreSpanHeight = 13.68561;
+
+	// let bannerFontSize = 5;
+	let bannerFontSize = $('#scoreBar')[0].clientHeight / height * 100;
+	let bannerScoreSpanHeight = $('#scoreBar')[0].clientHeight / height * 100;
 
 	if (newWidthToHeight > widthToHeight) {
 		// window width is too wide relative to desired game width
@@ -82,10 +85,20 @@ function windowResized() {
 		gameArea.style.height = newHeight + 'px';
 		gameArea.style.width = newWidth + 'px';
 
-		$('#lostScoreSpan').css({
+		$('#lostScore span').css({
 			'height': lostScoreSpanHeight + 'vh',
 			'line-height': lostScoreSpanHeight + 'vh',
-			'font-size': fontSize + 'vh'
+			'font-size': lostFontSize + 'vh'
+		});
+		$('#scoreBar span').css({
+			'height': bannerScoreSpanHeight + 'vh',
+			'line-height': bannerScoreSpanHeight + 'vh',
+			'font-size': bannerFontSize + 'vh'
+		});
+		$('#highscoreBar span').css({
+			'height': bannerScoreSpanHeight + 'vh',
+			'line-height': bannerScoreSpanHeight + 'vh',
+			'font-size': bannerFontSize + 'vh'
 		});
 	} else {
 		// window height is too high relative to desired game height
@@ -93,10 +106,20 @@ function windowResized() {
 		gameArea.style.width = newWidth + 'px';
 		gameArea.style.height = newHeight + 'px';
 
-		$('#lostScoreSpan').css({
+		$('#lostScore span').css({
 			'height': (lostScoreSpanHeight / widthToHeight) + 'vw',
 			'line-height': (lostScoreSpanHeight / widthToHeight) + 'vw',
-			'font-size': (fontSize / widthToHeight) + 'vw'
+			'font-size': (lostFontSize / widthToHeight) + 'vw'
+		});
+		$('#scoreBar span').css({
+			'height': (bannerScoreSpanHeight / widthToHeight) + 'vw',
+			'line-height': (bannerScoreSpanHeight / widthToHeight) + 'vw',
+			'font-size': (bannerFontSize / widthToHeight) + 'vw'
+		});
+		$('#highscoreBar span').css({
+			'height': (bannerScoreSpanHeight / widthToHeight) + 'vw',
+			'line-height': (bannerScoreSpanHeight / widthToHeight) + 'vw',
+			'font-size': (bannerFontSize / widthToHeight) + 'vw'
 		});
 	}
 
@@ -242,7 +265,7 @@ function checkIfGameLost() {
 }
 
 function endGame() {
-	$('#lostScoreSpan').text(score);
+	$('#lostScore span').text(score);
 	$("#lostScreen").fadeIn('slow', 'swing', showInterstitial);
 }
 
@@ -292,24 +315,26 @@ function drawOptions() {
 	}
 }
 
-function drawBannerScore() {
-	image(images.pointsBg, bannerScore.x, bannerScore.y, bannerScore.w, bannerScore.h);
-	font(bannerScore.fontSize);
-	fill('black');
-	textAlign("center");
-
+function calcScore() {
 	if (abs(score - scoreDisplay) > LERP.DIST) {
 		scoreDisplay = lerp(scoreDisplay, score, LERP.SCORE);
 	} else {
 		scoreDisplay = score;
 	}
+	$('#scoreBar span').text(floor(scoreDisplay));
+	$('#highscoreBar span').text(highscore);
+}
 
+function drawBannerScore() {
+	image(images.pointsBg, bannerScore.x, bannerScore.y, bannerScore.w, bannerScore.h);
+	font(bannerScore.fontSize);
+	fill('black');
+	textAlign("center");
 	text(floor(scoreDisplay), bannerScore.textX, bannerScore.textY);
 }
 
 function drawBannerHighscore() {
-	// image(images.pointsBg, bannerHighscore.x, bannerHighscore.y, bannerHighscore.w, bannerHighscore.h);
-	image(images.crown, bannerHighscore.x - bannerHighscore.h / 1.2, bannerHighscore.y - gap / 7, bannerHighscore.h * 1.1, bannerHighscore.h * 1.1);
+	image(images.pointsBg, bannerHighscore.x, bannerHighscore.y, bannerHighscore.w, bannerHighscore.h);
 	font(bannerHighscore.fontSize);
 	textAlign("center");
 	fill('black');
