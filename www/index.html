@@ -28,46 +28,30 @@
 
 		<div id="startScreen" class="screen">
 			<img style="width: 100%" src="img/logo.png">
-			<div id="play" class="icon">
-				<img src="img/play.png">
-			</div>
-			<div id="share" class="icon">
-				<img src="img/share.png">
-			</div>
-			<div id="rateus" class="icon">
-				<!-- <a href="https://play.google.com/store/apps/details?id=com.quaint.woodpuzzle" target="_blank">
-					<img src="img/rateus.png">
-				</a> -->
-			</div>
+			<div id="play" class="icon"></div>
+			<div id="share" class="icon"></div>
+			<div id="rateus" class="icon"></div>
 		</div>
 
 		<div id="gameScreen" class="screen">
-				<div id="pause" class="icon">
-					<!-- <img src="img/pause.png"> -->
-				</div>
-				<div id="scoreBar" class="">
-					<span>0</span>
-				</div>
-				<div id="highscoreBar" class="">
-					<span >0</span>
-				</div>
+			<div id="pause" class="icon"></div>
+			<div id="scoreBar">
+				<span style="top: 8%;">SCORE</span>
+				<span id="score" style="bottom: 6%;">0</span>
+			</div>
+			<div id="highscoreBar">
+				<span style="top: 8%;">HIGHSCORE</span>
+				<span id="highscore" style="bottom: 6%;">0</span>
+			</div>
 			<canvas id="canvas" width="0" height="0"></canvas>
 		</div>
 
 		<div id="pauseScreen" class="screen">
 			<div id="darkBackground"></div>
-			<div id="home" class="icon">
-				<img src="img/home.png">
-			</div>
-			<div id="restart" class="icon">
-				<img src="img/restart.png">
-			</div>
-			<div id="mute" class="icon">
-				<img src="img/mute.png">
-			</div>
-			<div id="resume" class="icon">
-				<img src="img/resume.png">
-			</div>
+			<img id="logo" style="position:absolute; width: 100%" src="img/logo.png">
+			<div id="home" class="icon"></div>
+			<div id="restart" class="icon"></div>
+			<div id="resume" class="icon"></div>
 		</div>
 
 		<div id="lostScreen" class="screen">
@@ -97,7 +81,6 @@
 	<!-- <script type="text/javascript" src="bot.js"></script> -->
 
 	<script type="text/javascript">
-
 		// $("#startScreen").fadeIn('fast');
 		// $("#loadingScreen").fadeIn('slow');
 
@@ -105,16 +88,21 @@
 		// 	$('#play').trigger("click");
 		// }, 10);
 
+
+		let clickable = false;
 		// START SCREEN
 		$('#play').click(function () {
 			$("#startScreen").fadeOut('slow');
-
+			clickable = true;
 			$("#gameScreen").fadeIn('slow', function () {
 				checkIfGameLost();
 			});
 			windowResized();
 		});
-		
+		$('#share').click(function () {
+			window.plugins.socialsharing.share('Try out Wood Puzzle by Quaint!', null, null,
+				'https://play.google.com/store/apps/details?id=com.quaint.woodpuzzle');
+		});
 		$('#rateus').click(function () {
 			cordova.plugins.market.open('com.quaint.woodpuzzle');
 		});
@@ -123,6 +111,7 @@
 		$('#pause').click(function () {
 			checkIfGameLost();
 			if (!gameLost) {
+				clickable = false;
 				$("#pauseScreen").fadeIn('slow');
 			}
 		});
@@ -134,6 +123,7 @@
 			$("#startScreen").fadeIn('slow');
 		});
 		$('#pauseScreen #restart').click(function () {
+			clickable = true;
 			$("#loadingScreen").fadeIn(0);
 			$("#pauseScreen").fadeOut('slow');
 			$("#gameScreen").fadeOut('slow', function () {
@@ -145,7 +135,9 @@
 			});
 		});
 		$('#pauseScreen #resume').click(function () {
-			$("#pauseScreen").fadeOut('slow');
+			$("#pauseScreen").fadeOut('slow', function () {
+				clickable = true;
+			});
 		});
 
 		// LOST SCREEN
@@ -156,6 +148,7 @@
 			$("#startScreen").fadeIn('slow');
 		});
 		$('#lostScreen #restart').click(function () {
+			clickable = true;
 			$("#loadingScreen").fadeIn(0);
 			$("#lostScreen").fadeOut('slow');
 			$("#gameScreen").fadeOut('slow', function () {

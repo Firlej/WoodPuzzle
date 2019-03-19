@@ -223,7 +223,6 @@ class Board {
             baseY++;
             baseSize -= 2;
         }
-        image(images.gridBG, this.x, this.y, this.w, this.h);
         image(images.grid, this.x, this.y, this.w, this.h);
     }
 }

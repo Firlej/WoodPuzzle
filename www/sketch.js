@@ -1,6 +1,6 @@
 sources = {
-	grid: 'img/grid.png',
-	gridBG: 'img/gridbg.jpg',
+	grid: 'img/grid.jpg',
+	gridbg: 'img/gridbg.jpg',
 	tile: 'img/tile.jpg',
 	// pointsBg: 'img/baner.png',
 	// crown: 'img/crown.png',
@@ -76,8 +76,8 @@ function windowResized() {
 	let lostScoreSpanHeight = 13.68561;
 
 	// let bannerFontSize = 5;
-	let bannerFontSize = $('#scoreBar')[0].clientHeight / height * 100;
-	let bannerScoreSpanHeight = $('#scoreBar')[0].clientHeight / height * 100;
+	let bannerFontSize = $('#scoreBar')[0].clientHeight / height * 100 * 1;
+	let bannerScoreSpanHeight = $('#scoreBar')[0].clientHeight / height * 100 * 0.9;
 
 	if (newWidthToHeight > widthToHeight) {
 		// window width is too wide relative to desired game width
@@ -91,14 +91,24 @@ function windowResized() {
 			'font-size': lostFontSize + 'vh'
 		});
 		$('#scoreBar span').css({
-			'height': bannerScoreSpanHeight + 'vh',
-			'line-height': bannerScoreSpanHeight + 'vh',
-			'font-size': bannerFontSize + 'vh'
+			'height': bannerScoreSpanHeight*0.3 + 'vh',
+			'line-height': bannerScoreSpanHeight*0.3 + 'vh',
+			'font-size': bannerFontSize*0.3 + 'vh'
+		});
+		$('#scoreBar span#score').css({
+			'height': bannerScoreSpanHeight*0.7 + 'vh',
+			'line-height': bannerScoreSpanHeight*0.7 + 'vh',
+			'font-size': bannerFontSize*0.7 + 'vh'
 		});
 		$('#highscoreBar span').css({
-			'height': bannerScoreSpanHeight + 'vh',
-			'line-height': bannerScoreSpanHeight + 'vh',
-			'font-size': bannerFontSize + 'vh'
+			'height': bannerScoreSpanHeight*0.3 + 'vh',
+			'line-height': bannerScoreSpanHeight*0.3 + 'vh',
+			'font-size': bannerFontSize*0.3 + 'vh'
+		});
+		$('#highscoreBar span#highscore').css({
+			'height': bannerScoreSpanHeight*0.7 + 'vh',
+			'line-height': bannerScoreSpanHeight*0.7 + 'vh',
+			'font-size': bannerFontSize*0.7 + 'vh'
 		});
 	} else {
 		// window height is too high relative to desired game height
@@ -112,14 +122,24 @@ function windowResized() {
 			'font-size': (lostFontSize / widthToHeight) + 'vw'
 		});
 		$('#scoreBar span').css({
-			'height': (bannerScoreSpanHeight / widthToHeight) + 'vw',
-			'line-height': (bannerScoreSpanHeight / widthToHeight) + 'vw',
-			'font-size': (bannerFontSize / widthToHeight) + 'vw'
+			'height': (bannerScoreSpanHeight / widthToHeight)*0.3 + 'vw',
+			'line-height': (bannerScoreSpanHeight / widthToHeight)*0.3 + 'vw',
+			'font-size': (bannerFontSize / widthToHeight)*0.3 + 'vw'
+		});
+		$('#scoreBar span#score').css({
+			'height': (bannerScoreSpanHeight / widthToHeight)*0.7 + 'vw',
+			'line-height': (bannerScoreSpanHeight / widthToHeight)*0.7 + 'vw',
+			'font-size': (bannerFontSize / widthToHeight)*0.7 + 'vw'
 		});
 		$('#highscoreBar span').css({
-			'height': (bannerScoreSpanHeight / widthToHeight) + 'vw',
-			'line-height': (bannerScoreSpanHeight / widthToHeight) + 'vw',
-			'font-size': (bannerFontSize / widthToHeight) + 'vw'
+			'height': (bannerScoreSpanHeight / widthToHeight)*0.3 + 'vw',
+			'line-height': (bannerScoreSpanHeight / widthToHeight)*0.3 + 'vw',
+			'font-size': (bannerFontSize / widthToHeight)*0.3 + 'vw'
+		});
+		$('#highscoreBar span#highscore').css({
+			'height': (bannerScoreSpanHeight / widthToHeight)*0.7 + 'vw',
+			'line-height': (bannerScoreSpanHeight / widthToHeight)*0.7 + 'vw',
+			'font-size': (bannerFontSize / widthToHeight)*0.7 + 'vw'
 		});
 	}
 
@@ -208,7 +228,7 @@ function addScore(amount) {
 }
 
 function mousePressed() {
-	if (!(pickedOption instanceof Option) && !gameLost) {
+	if (!(pickedOption instanceof Option) && !gameLost && clickable) {
 		for (let i = 0; i < options.length; i++) {
 			let option = options[i];
 			if (option.isAvailable() && mouseContained(
@@ -287,20 +307,20 @@ function fillOptions() {
 // 		fillOptions();
 // 	} else if (k == 102) {
 // 		mainBoard.setGrid([
-// 			[0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-// 			[1, 0, 1, 1, 1, 1, 1, 1, 1, 0],
-// 			[1, 1, 0, 1, 1, 1, 1, 1, 1, 0],
-// 			[1, 1, 1, 0, 1, 1, 1, 1, 1, 0],
-// 			[1, 1, 1, 1, 0, 1, 1, 1, 1, 0],
-// 			[1, 1, 1, 1, 1, 0, 1, 1, 1, 0],
-// 			[1, 1, 1, 1, 1, 1, 0, 1, 1, 1],
-// 			[1, 1, 1, 1, 1, 1, 1, 0, 1, 1],
-// 			[1, 1, 1, 1, 1, 1, 1, 1, 0, 1],
-// 			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+// 			[0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+// 			[0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+// 			[0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+// 			[0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+// 			[1, 1, 1, 1, 0, 0, 0, 1, 1, 1],
+// 			[1, 1, 1, 1, 0, 0, 0, 1, 1, 1],
+// 			[1, 1, 1, 1, 0, 0, 0, 1, 1, 1],
+// 			[0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+// 			[0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+// 			[0, 0, 0, 0, 1, 1, 1, 0, 0, 0]
 // 		]);
-// 		options[0].setGrid(figures[0]);
-// 		options[1].setGrid(figures[0]);
-// 		options[2].setGrid(figures[0]);
+// 		options[0].setGrid(figures[18]);
+// 		options[1].setGrid(figures[18]);
+// 		options[2].setGrid(figures[18]);
 // 	}
 // 	redrawOnce = true;
 // }
@@ -321,8 +341,8 @@ function calcScore() {
 	} else {
 		scoreDisplay = score;
 	}
-	$('#scoreBar span').text(floor(scoreDisplay));
-	$('#highscoreBar span').text(highscore);
+	$('#scoreBar span#score').text(floor(scoreDisplay));
+	$('#highscoreBar span#highscore').text(highscore);
 }
 
 function drawBannerScore() {

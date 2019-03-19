@@ -89,7 +89,7 @@ function setValues() {
 
     mainBoard.border = {
         x: gap,
-        y: $('#scoreBar')[0].clientHeight + gap * 2.5,
+        y: $('#scoreBar')[0].clientHeight + gap * 2,
         size: width - gap - gap,
         thickness: gapSmall / 2,
     };

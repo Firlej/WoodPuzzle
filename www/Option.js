@@ -259,7 +259,7 @@ class Option {
             baseY++;
             baseSize -= 2;
         }
-        image(images.gridBG, this.constX, this.constY, tileSizeSmall * FIGURE_SIZE, tileSizeSmall * FIGURE_SIZE);
+        image(images.gridbg, this.constX, this.constY, tileSizeSmall * FIGURE_SIZE, tileSizeSmall * FIGURE_SIZE);
     }
 
     calcOffset() {

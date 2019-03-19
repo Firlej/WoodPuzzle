@@ -1,7 +1,7 @@
 {
     "name": "com.quaint.woodpuzzle",
     "displayName": "Wood Puzzle",
-    "version": "1.6.1",
+    "version": "1.6.2",
     "description": "Simple Wood Puzzle",
     "main": "index.js",
     "scripts": {
@@ -13,14 +13,19 @@
         "cordova-android": "^7.1.4",
         "cordova-plugin-admobpro": "^2.37.2",
         "cordova-plugin-extension": "^1.5.4",
-        "cordova-plugin-market": "git+https://github.com/xmartlabs/cordova-plugin-market.git"
+        "cordova-plugin-market": "git+https://github.com/xmartlabs/cordova-plugin-market.git",
+        "cordova-plugin-x-socialsharing": "^5.4.4",
+        "es6-promise-plugin": "^4.2.2"
     },
     "cordova": {
         "plugins": {
             "cordova-plugin-admobpro": {
                 "PLAY_SERVICES_VERSION": "16.0.0"
             },
-            "cordova-plugin-market": {}
+            "cordova-plugin-market": {},
+            "cordova-plugin-x-socialsharing": {
+                "ANDROID_SUPPORT_V4_VERSION": "24.1.1+"
+            }
         },
         "platforms": [
             "android"

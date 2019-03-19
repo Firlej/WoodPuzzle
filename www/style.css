@@ -55,8 +55,8 @@ body {
 /* ICONS AND BUTTONS */
 .icon {
     position: absolute;
+    background-size: 100% 100%;
 }
-
 .icon img {
     width: 100%;
     height: 100%;
@@ -68,7 +68,6 @@ body {
     height: calc(35%*9/16*44/128);
     bottom: 40%;
 }
-
 .button img {
     width: 100%;
     height: 100%;
@@ -91,6 +90,8 @@ body {
 }
 
 span {
+    position: absolute;
+    left: 0%;
     font-family: 'FontAwesome';
     display: inline-block;
     width: 100%;
