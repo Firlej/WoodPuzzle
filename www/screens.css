@@ -119,6 +119,7 @@
 }
 
 #lostScreen #home {
+    background-image: url("img/home.png");
     left: calc(50%/3);
     bottom: 35%;
     width: 25%;
@@ -126,6 +127,7 @@
 }
 
 #lostScreen #restart {
+    background-image: url("img/restart.png");
     right: calc(50%/3);
     bottom: 35%;
     width: 25%;

@@ -22,12 +22,17 @@ function setup(callback) {
 
 	callback();
 
+	// setInterval(function(){
+	// 	console.log(frameCount);
+	// 	frameCount = 0;
+	// }, 1000);
+
 	redrawOnce = true;
 }
 
 function draw() {
 
-	if (gameIsStatic() && frameCount > 6000) {
+	if (gameIsStatic() && frameCount > 1200) {
 		return;
 	}
 

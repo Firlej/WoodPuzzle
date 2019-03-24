@@ -28,13 +28,13 @@
 
 		<div id="startScreen" class="screen">
 			<img style="width: 100%" src="img/logo.png">
-			<div id="play" class="icon"></div>
-			<div id="share" class="icon"></div>
-			<div id="rateus" class="icon"></div>
+			<div id="play" class="icon"><div class="icon_overlay"></div></div>
+			<div id="share" class="icon"><div class="icon_overlay"></div></div>
+			<div id="rateus" class="icon"><div class="icon_overlay"></div></div>
 		</div>
 
 		<div id="gameScreen" class="screen">
-			<div id="pause" class="icon"></div>
+			<div id="pause" class="icon"><div class="icon_overlay"></div></div>
 			<div id="scoreBar">
 				<span style="top: 8%;">SCORE</span>
 				<span id="score" style="bottom: 6%;">0</span>
@@ -49,20 +49,16 @@
 		<div id="pauseScreen" class="screen">
 			<div id="darkBackground"></div>
 			<img id="logo" style="position:absolute; width: 100%" src="img/logo.png">
-			<div id="home" class="icon"></div>
-			<div id="restart" class="icon"></div>
-			<div id="resume" class="icon"></div>
+			<div id="home" class="icon"><div class="icon_overlay"></div></div>
+			<div id="restart" class="icon"><div class="icon_overlay"></div></div>
+			<div id="resume" class="icon"><div class="icon_overlay"></div></div>
 		</div>
 
 		<div id="lostScreen" class="screen">
 			<div id="darkBackground"></div>
 			<div id="lostScore" class="button"><span>0</span></div>
-			<div id="home" class="icon">
-				<img src="img/home.png">
-			</div>
-			<div id="restart" class="icon">
-				<img src="img/restart.png">
-			</div>
+			<div id="home" class="icon"><div class="icon_overlay"></div></div>
+			<div id="restart" class="icon"><div class="icon_overlay"></div></div>
 		</div>
 
 	</div>
@@ -87,7 +83,6 @@
 		// setTimeout(function () {
 		// 	$('#play').trigger("click");
 		// }, 10);
-
 
 		let clickable = false;
 		// START SCREEN
@@ -157,6 +152,13 @@
 				$("#gameScreen").fadeIn('slow', function () {
 					$("#loadingScreen").fadeOut(0);
 				});
+			});
+		});
+		
+		$('.icon').click(function () {
+			let id = '#'+this.id+' .icon_overlay'
+			$(id).fadeIn(50, function() {
+				$(id).fadeOut('slow');
 			});
 		});
 

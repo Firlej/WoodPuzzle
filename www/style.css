@@ -52,15 +52,31 @@ body {
     /* background-color: rgba(31, 31, 31, 0.6); */
 }
 
+.icon_overlay {
+    background-image: url("img/icon_overlay.png");
+    display: none;
+    position: absolute;
+    background-size: 100% 100%;
+    opacity: 0.5;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
 /* ICONS AND BUTTONS */
 .icon {
     position: absolute;
     background-size: 100% 100%;
 }
-.icon img {
-    width: 100%;
-    height: 100%;
-}
+
+/* .icon:active .icon_overlay,
+.icon:focus .icon_overlay,
+.icon:target .icon_overlay {
+    display: block;
+    position: absolute;
+    background-size: 100% 100%;
+} */
 
 .button {
     position: absolute;
@@ -68,6 +84,7 @@ body {
     height: calc(35%*9/16*44/128);
     bottom: 40%;
 }
+
 .button img {
     width: 100%;
     height: 100%;
