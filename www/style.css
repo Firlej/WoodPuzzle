@@ -1,6 +1,7 @@
 html,
 body,
 html.touch body {
+    -webkit-user-select: none;
     font-family: 'FontAwesome';
     padding: 0px;
     margin: 0px;
